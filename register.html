@@ -1,2251 +1,1258 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
+  <meta name="theme-color" content="#111a2d">
 
-  <meta
-    name="theme-color"
-    content="#111a2d"
-  >
-
-  <title>
-    WindsorKnot | Member Registration
-  </title>
-
+  <title>WindsorKnot | Member Registration</title>
 
   <style>
-
-    /* =====================================================
-       DESIGN TOKENS
-    ===================================================== */
-
     :root {
-
-      --navy:
-        #111a2d;
-
-      --navy-deep:
-        #0b1220;
-
-      --navy-soft:
-        #172238;
-
-      --gold:
-        #c6a15b;
-
-      --gold-light:
-        #ddc58f;
-
-      --ivory:
-        #f4f0e7;
-
-      --danger:
-        #e0aaa0;
-
-      --serif:
-        "Times New Roman",
-        "Yu Mincho",
-        "YuMincho",
-        "Hiragino Mincho ProN",
-        serif;
-
-      --sans:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Helvetica Neue",
-        "Hiragino Kaku Gothic ProN",
-        "Yu Gothic",
-        Arial,
-        sans-serif;
-
+      --navy: #111a2d;
+      --navy-light: #172238;
+      --navy-input: #18243a;
+      --gold: #c7a24e;
+      --gold-light: #dcc27c;
+      --ivory: #f4f0e8;
+      --white: #f7f5f0;
+      --gray: #8d94a1;
+      --line: rgba(199, 162, 78, 0.38);
+      --error: #d36b6b;
+      --success: #b8c9a8;
     }
-
-
-
-    /* =====================================================
-       RESET
-    ===================================================== */
 
     * {
-
-      box-sizing:
-        border-box;
-
-      -webkit-tap-highlight-color:
-        transparent;
-
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-
 
     html {
-
-      margin:
-        0;
-
-      padding:
-        0;
-
-      min-height:
-        100%;
-
-      background:
-        var(--navy);
-
+      background: var(--navy);
     }
-
 
     body {
-
-      margin:
-        0;
-
-      min-height:
-        100vh;
-
-      min-height:
-        100dvh;
-
-      color:
-        var(--ivory);
-
-      font-family:
-        var(--sans);
-
-      -webkit-font-smoothing:
-        antialiased;
-
+      min-height: 100vh;
       background:
-
         radial-gradient(
           circle at 50% -10%,
-          rgba(198,161,91,.10),
-          transparent 35%
+          rgba(56, 74, 107, 0.30),
+          transparent 38%
         ),
-
         linear-gradient(
           180deg,
-          #141e33 0%,
-          #111a2d 48%,
-          #0b1322 100%
+          #172238 0%,
+          #111a2d 40%,
+          #0d1627 100%
         );
-
+      color: var(--white);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
+        "Yu Gothic",
+        "YuGothic",
+        "Noto Sans JP",
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
-
-
-    body::before {
-
-      content:
-        "";
-
-      position:
-        fixed;
-
-      z-index:
-        0;
-
-      width:
-        470px;
-
-      height:
-        470px;
-
-      top:
-        -285px;
-
-      right:
-        -280px;
-
-      border:
-        1px solid
-        rgba(198,161,91,.10);
-
-      border-radius:
-        50%;
-
-      pointer-events:
-        none;
-
-    }
-
-
-    body::after {
-
-      content:
-        "";
-
-      position:
-        fixed;
-
-      z-index:
-        0;
-
-      width:
-        350px;
-
-      height:
-        350px;
-
-      left:
-        -240px;
-
-      bottom:
-        -240px;
-
-      border:
-        1px solid
-        rgba(198,161,91,.07);
-
-      border-radius:
-        50%;
-
-      pointer-events:
-        none;
-
-    }
-
 
     button,
     input {
-
-      font-family:
-        inherit;
-
+      font: inherit;
     }
 
-
-
-    /* =====================================================
-       PAGE
-    ===================================================== */
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
 
     .page {
-
-      position:
-        relative;
-
-      z-index:
-        1;
-
-      width:
-        100%;
-
-      min-height:
-        100vh;
-
-      min-height:
-        100dvh;
-
+      width: 100%;
+      min-height: 100vh;
+      padding:
+        max(30px, env(safe-area-inset-top))
+        20px
+        max(60px, env(safe-area-inset-bottom));
     }
-
 
     .container {
-
-      width:
-        100%;
-
-      max-width:
-        480px;
-
-      margin:
-        0 auto;
-
-      padding:
-
-        calc(
-          26px +
-          env(safe-area-inset-top)
-        )
-
-        20px
-
-        calc(
-          55px +
-          env(safe-area-inset-bottom)
-        );
-
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
     }
 
-
-
-    /* =====================================================
-       BRAND
-    ===================================================== */
+    /* ==============================
+       HEADER
+    ============================== */
 
     .brand {
-
-      padding-top:
-        14px;
-
-      margin-bottom:
-        33px;
-
-      text-align:
-        center;
-
+      text-align: center;
+      margin-bottom: 54px;
     }
-
 
     .brand-logo {
-
-      color:
-        var(--ivory);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        clamp(
-          38px,
-          10vw,
-          49px
-        );
-
-      font-weight:
-        400;
-
-      font-style:
-        italic;
-
-      letter-spacing:
-        -2.5px;
-
-      line-height:
-        1;
-
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(46px, 9vw, 72px);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -4px;
+      color: var(--ivory);
+      line-height: 1;
     }
-
 
     .brand-sub {
-
-      margin-top:
-        13px;
-
-      color:
-        var(--gold-light);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        9px;
-
-      letter-spacing:
-        5px;
-
-      opacity:
-        .88;
-
+      margin-top: 22px;
+      color: var(--gold-light);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 12px;
+      letter-spacing: 8px;
     }
-
-
-    .brand-line {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      width:
-        180px;
-
-      margin:
-        21px auto 0;
-
-    }
-
-
-    .brand-line::before,
-    .brand-line::after {
-
-      content:
-        "";
-
-      display:
-        block;
-
-      flex:
-        1;
-
-      height:
-        1px;
-
-    }
-
-
-    .brand-line::before {
-
-      background:
-        linear-gradient(
-          90deg,
-          transparent,
-          rgba(198,161,91,.72)
-        );
-
-    }
-
-
-    .brand-line::after {
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(198,161,91,.72),
-          transparent
-        );
-
-    }
-
-
-    .brand-diamond {
-
-      width:
-        5px;
-
-      height:
-        5px;
-
-      margin:
-        0 11px;
-
-      border:
-        1px solid
-        var(--gold);
-
-      transform:
-        rotate(45deg);
-
-    }
-
-
-
-    /* =====================================================
-       PANEL
-    ===================================================== */
-
-    .panel {
-
-      position:
-        relative;
-
-      overflow:
-        hidden;
-
-      padding:
-        35px 27px 32px;
-
-      border:
-        1px solid
-        rgba(198,161,91,.25);
-
-      border-radius:
-        4px;
-
-      background:
-
-        linear-gradient(
-          145deg,
-          rgba(23,34,56,.97),
-          rgba(10,18,32,.98)
-        );
-
-      box-shadow:
-        0 28px 65px
-        rgba(0,0,0,.24);
-
-    }
-
-
-    .panel::before {
-
-      content:
-        "";
-
-      position:
-        absolute;
-
-      inset:
-        7px;
-
-      border:
-        1px solid
-        rgba(198,161,91,.06);
-
-      pointer-events:
-        none;
-
-    }
-
-
-    .panel-content {
-
-      position:
-        relative;
-
-      z-index:
-        2;
-
-    }
-
-
-
-    /* =====================================================
-       HEADER
-    ===================================================== */
-
-    .eyebrow {
-
-      color:
-        var(--gold);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        9px;
-
-      letter-spacing:
-        3.5px;
-
-    }
-
-
-    .title {
-
-      margin:
-        10px 0 12px;
-
-      color:
-        var(--ivory);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        27px;
-
-      font-weight:
-        400;
-
-      letter-spacing:
-        .5px;
-
-      line-height:
-        1.35;
-
-    }
-
-
-    .description {
-
-      margin:
-        0;
-
-      color:
-        rgba(244,240,231,.50);
-
-      font-size:
-        11px;
-
-      line-height:
-        1.9;
-
-    }
-
 
     .ornament {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      margin:
-        28px 0 31px;
-
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
     }
-
 
     .ornament-line {
-
-      flex:
-        1;
-
-      height:
-        1px;
-
-      background:
-
-        linear-gradient(
-          90deg,
-          rgba(198,161,91,.48),
-          rgba(198,161,91,.07)
-        );
-
+      width: 124px;
+      max-width: 28vw;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gold)
+      );
     }
 
+    .ornament-line.right {
+      background: linear-gradient(
+        90deg,
+        var(--gold),
+        transparent
+      );
+    }
 
     .ornament-diamond {
-
-      width:
-        5px;
-
-      height:
-        5px;
-
-      margin-left:
-        8px;
-
-      border:
-        1px solid
-        rgba(198,161,91,.72);
-
-      transform:
-        rotate(45deg);
-
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
     }
 
+    /* ==============================
+       CARD
+    ============================== */
 
+    .registration-card {
+      position: relative;
+      border: 1px solid rgba(199, 162, 78, 0.50);
+      padding: 48px;
+      background: rgba(13, 23, 41, 0.28);
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.15),
+        inset 0 0 40px rgba(255, 255, 255, 0.01);
+    }
 
-    /* =====================================================
+    .registration-card::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(199, 162, 78, 0.10);
+      pointer-events: none;
+    }
+
+    .section-label {
+      color: var(--gold-light);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 12px;
+      letter-spacing: 6px;
+      margin-bottom: 22px;
+    }
+
+    .title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(38px, 7vw, 52px);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ivory);
+      margin-bottom: 28px;
+    }
+
+    .description {
+      color: var(--gray);
+      font-size: 15px;
+      line-height: 2;
+      letter-spacing: 0.03em;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      margin: 44px 0;
+    }
+
+    .section-divider::before {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(
+        90deg,
+        var(--gold),
+        rgba(199, 162, 78, 0.20)
+      );
+    }
+
+    .divider-diamond {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+      margin-left: 14px;
+    }
+
+    /* ==============================
        FORM
-    ===================================================== */
+    ============================== */
 
     .field {
-
-      margin-bottom:
-        24px;
-
+      margin-bottom: 34px;
     }
 
+    .field-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 13px;
+    }
 
     .field-number {
-
-      display:
-        inline-block;
-
-      min-width:
-        27px;
-
-      color:
-        rgba(198,161,91,.38);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        8px;
-
-      letter-spacing:
-        1px;
-
+      color: rgba(199, 162, 78, 0.55);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 11px;
+      min-width: 28px;
     }
 
-
-    .label {
-
-      display:
-        block;
-
-      margin-bottom:
-        9px;
-
-      color:
-        rgba(221,197,143,.82);
-
-      font-size:
-        9px;
-
-      letter-spacing:
-        2.2px;
-
+    .field-label-en {
+      color: var(--gold-light);
+      font-size: 12px;
+      letter-spacing: 4px;
     }
 
-
-    .label-jp {
-
-      margin-left:
-        5px;
-
-      color:
-        rgba(244,240,231,.35);
-
-      font-size:
-        9px;
-
-      letter-spacing:
-        0;
-
+    .field-label-ja {
+      color: #727b8c;
+      font-size: 12px;
+      margin-left: -5px;
     }
 
+    .required {
+      color: var(--gold);
+      font-size: 10px;
+      margin-left: auto;
+      letter-spacing: 1px;
+    }
 
-    input {
-
-      width:
-        100%;
-
-      height:
-        56px;
-
-      padding:
-        0 16px;
-
-      border:
-        1px solid
-        rgba(198,161,91,.23);
-
-      border-radius:
-        2px;
-
-      outline:
-        none;
-
-      background:
-        rgba(255,255,255,.03);
-
-      color:
-        var(--ivory);
-
-      font-size:
-        16px;
-
+    .input {
+      width: 100%;
+      height: 66px;
+      border-radius: 2px;
+      border: 1px solid rgba(199, 162, 78, 0.38);
+      background: rgba(24, 36, 58, 0.62);
+      color: var(--ivory);
+      padding: 0 22px;
+      font-size: 18px;
+      outline: none;
       transition:
-        border-color .2s ease,
-        background .2s ease;
-
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
     }
 
-
-    input::placeholder {
-
-      color:
-        rgba(244,240,231,.20);
-
+    .input::placeholder {
+      color: rgba(151, 158, 172, 0.38);
     }
 
-
-    input:focus {
-
-      border-color:
-        rgba(198,161,91,.75);
-
-      background:
-        rgba(255,255,255,.045);
-
+    .input:focus {
+      border-color: var(--gold);
+      background: rgba(27, 40, 64, 0.90);
+      box-shadow: 0 0 0 1px rgba(199, 162, 78, 0.10);
     }
 
-
-
-    /* =====================================================
-       BUTTON
-    ===================================================== */
+    /* ==============================
+       SUBMIT
+    ============================== */
 
     .submit-area {
-
-      margin-top:
-        34px;
-
+      margin-top: 52px;
     }
-
 
     .submit-button {
-
-      position:
-        relative;
-
-      width:
-        100%;
-
-      min-height:
-        61px;
-
-      padding:
-        12px 18px;
-
-      border:
-        1px solid
-        var(--gold);
-
-      border-radius:
-        2px;
-
-      background:
-        var(--gold);
-
-      color:
-        var(--navy-deep);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        13px;
-
-      font-weight:
-        600;
-
-      letter-spacing:
-        2.5px;
-
-      cursor:
-        pointer;
-
+      width: 100%;
+      height: 72px;
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: #111a2d;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
       transition:
-        opacity .2s ease;
-
+        background 0.25s ease,
+        color 0.25s ease,
+        opacity 0.25s ease;
     }
 
+    .submit-button:hover {
+      background: var(--gold-light);
+    }
 
     .submit-button:disabled {
-
-      opacity:
-        .45;
-
-      cursor:
-        default;
-
+      cursor: default;
+      opacity: 0.55;
     }
 
-
-    .submit-sub {
-
-      display:
-        block;
-
-      margin-top:
-        5px;
-
-      font-family:
-        var(--sans);
-
-      font-size:
-        8px;
-
-      font-weight:
-        400;
-
-      letter-spacing:
-        1px;
-
-      opacity:
-        .65;
-
+    .button-main {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      letter-spacing: 5px;
+      font-weight: 600;
     }
 
-
-
-    /* =====================================================
-       ERROR
-    ===================================================== */
-
-    .error {
-
-      display:
-        none;
-
-      margin-top:
-        20px;
-
-      padding:
-        15px 16px;
-
-      border:
-        1px solid
-        rgba(193,112,91,.32);
-
-      background:
-        rgba(121,47,35,.13);
-
-      color:
-        var(--danger);
-
-      font-size:
-        11px;
-
-      line-height:
-        1.8;
-
+    .button-sub {
+      display: block;
+      margin-top: 5px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      opacity: 0.65;
     }
 
+    .privacy {
+      text-align: center;
+      color: #657084;
+      font-size: 11px;
+      line-height: 1.8;
+      margin-top: 22px;
+    }
 
+    /* ==============================
+       STATUS / ERROR
+    ============================== */
 
-    /* =====================================================
+    .status {
+      display: none;
+      margin-top: 24px;
+      padding: 18px;
+      border: 1px solid rgba(199, 162, 78, 0.35);
+      color: var(--gray);
+      font-size: 13px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.error {
+      border-color: rgba(211, 107, 107, 0.45);
+      color: #e6a1a1;
+    }
+
+    /* ==============================
        SUCCESS
-    ===================================================== */
+    ============================== */
 
-    .success {
-
-      text-align:
-        center;
-
-      padding:
-        15px 0 5px;
-
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 30px 0 10px;
     }
 
-
-    .success-mark {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      width:
-        68px;
-
-      height:
-        68px;
-
-      margin:
-        5px auto 30px;
-
-      border:
-        1px solid
-        var(--gold);
-
-      border-radius:
-        50%;
-
-      color:
-        var(--gold);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        25px;
-
+    .success-screen.show {
+      display: block;
     }
 
-
-    .success-eyebrow {
-
-      color:
-        var(--gold);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        9px;
-
-      letter-spacing:
-        3.5px;
-
+    .success-symbol {
+      width: 74px;
+      height: 74px;
+      border: 1px solid var(--gold);
+      margin: 0 auto 36px;
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
+    .success-symbol-inner {
+      width: 22px;
+      height: 22px;
+      border: 1px solid var(--gold-light);
+    }
+
+    .success-label {
+      color: var(--gold-light);
+      font-size: 11px;
+      letter-spacing: 7px;
+      margin-bottom: 22px;
+    }
 
     .success-title {
-
-      margin-top:
-        10px;
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        27px;
-
-      line-height:
-        1.4;
-
-      letter-spacing:
-        .5px;
-
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(38px, 7vw, 52px);
+      font-weight: 400;
+      color: var(--ivory);
+      margin-bottom: 18px;
     }
 
-
-    .success-description {
-
-      margin-top:
-        17px;
-
-      color:
-        rgba(244,240,231,.48);
-
-      font-size:
-        11px;
-
-      line-height:
-        1.9;
-
+    .success-message {
+      color: var(--gray);
+      font-size: 14px;
+      line-height: 2;
     }
-
 
     .member-number-box {
-
-      margin:
-        31px 0;
-
-      padding:
-        24px 15px;
-
-      border-top:
-        1px solid
-        rgba(198,161,91,.22);
-
-      border-bottom:
-        1px solid
-        rgba(198,161,91,.22);
-
+      margin: 42px auto 32px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 28px 10px;
+      max-width: 380px;
     }
-
 
     .member-number-label {
-
-      color:
-        rgba(221,197,143,.50);
-
-      font-size:
-        8px;
-
-      letter-spacing:
-        3px;
-
+      color: var(--gold-light);
+      font-size: 10px;
+      letter-spacing: 5px;
+      margin-bottom: 12px;
     }
-
 
     .member-number {
-
-      margin-top:
-        10px;
-
-      color:
-        var(--ivory);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        37px;
-
-      letter-spacing:
-        3px;
-
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 46px;
+      color: var(--ivory);
+      letter-spacing: 4px;
     }
 
-
-    .important {
-
-      margin-top:
-        19px;
-
-      padding:
-        15px;
-
-      border:
-        1px solid
-        rgba(198,161,91,.15);
-
-      background:
-        rgba(198,161,91,.04);
-
-      color:
-        rgba(244,240,231,.52);
-
-      font-size:
-        10px;
-
-      line-height:
-        1.8;
-
+    .success-name {
+      color: var(--ivory);
+      font-size: 18px;
+      margin-top: 20px;
     }
 
+    .success-note {
+      color: #657084;
+      font-size: 11px;
+      line-height: 1.9;
+      margin-top: 36px;
+    }
 
-
-    /* =====================================================
+    /* ==============================
        FOOTER
-    ===================================================== */
+    ============================== */
 
     .footer {
-
-      margin-top:
-        25px;
-
-      text-align:
-        center;
-
+      text-align: center;
+      margin-top: 46px;
     }
 
-
-    .venue-line {
-
-      color:
-        rgba(221,197,143,.52);
-
-      font-family:
-        var(--serif);
-
-      font-size:
-        8px;
-
-      letter-spacing:
-        5px;
-
+    .footer-brand {
+      font-family: Georgia, "Times New Roman", serif;
+      font-style: italic;
+      color: rgba(244, 240, 232, 0.40);
+      font-size: 18px;
     }
 
-
-    .notice {
-
-      margin-top:
-        15px;
-
-      color:
-        rgba(244,240,231,.27);
-
-      font-size:
-        8px;
-
-      line-height:
-        1.8;
-
+    .footer-copy {
+      margin-top: 12px;
+      color: rgba(120, 130, 147, 0.45);
+      font-size: 9px;
+      letter-spacing: 2px;
     }
 
-
-
-    /* =====================================================
+    /* ==============================
        MOBILE
-    ===================================================== */
+    ============================== */
 
-    @media (
-      max-width: 370px
-    ) {
-
-      .container {
-
-        padding-left:
-          15px;
-
-        padding-right:
-          15px;
-
+    @media (max-width: 600px) {
+      .page {
+        padding-left: 14px;
+        padding-right: 14px;
       }
 
-
-      .panel {
-
-        padding-left:
-          22px;
-
-        padding-right:
-          22px;
-
+      .brand {
+        margin-bottom: 42px;
       }
 
+      .brand-logo {
+        font-size: 49px;
+      }
+
+      .brand-sub {
+        font-size: 10px;
+        letter-spacing: 6px;
+      }
+
+      .registration-card {
+        padding: 34px 24px 38px;
+      }
+
+      .registration-card::before {
+        inset: 8px;
+      }
+
+      .section-label {
+        font-size: 10px;
+        letter-spacing: 5px;
+      }
 
       .title {
-
-        font-size:
-          25px;
-
+        font-size: 39px;
       }
 
+      .description {
+        font-size: 13px;
+      }
+
+      .field {
+        margin-bottom: 29px;
+      }
+
+      .field-head {
+        gap: 9px;
+      }
+
+      .field-label-en {
+        font-size: 10px;
+        letter-spacing: 3px;
+      }
+
+      .field-label-ja {
+        font-size: 10px;
+      }
+
+      .required {
+        font-size: 8px;
+      }
+
+      .input {
+        height: 62px;
+        font-size: 16px;
+        padding: 0 18px;
+      }
+
+      .submit-button {
+        height: 68px;
+      }
     }
-
   </style>
-
 </head>
-
 
 <body>
 
+  <main class="page">
+    <div class="container">
 
-<div class="page">
+      <!-- BRAND -->
+      <header class="brand">
+        <div class="brand-logo">WindsorKnot</div>
+        <div class="brand-sub">MEMBERSHIP</div>
 
+        <div class="ornament">
+          <div class="ornament-line"></div>
+          <div class="ornament-diamond"></div>
+          <div class="ornament-line right"></div>
+        </div>
+      </header>
 
-  <div class="container">
+      <!-- REGISTRATION CARD -->
+      <section class="registration-card">
 
+        <div id="registrationContent">
 
-    <!-- ==========================================
-         BRAND
-    =========================================== -->
-
-    <header class="brand">
-
-
-      <div class="brand-logo">
-
-        WindsorKnot
-
-      </div>
-
-
-      <div class="brand-sub">
-
-        MEMBERSHIP
-
-      </div>
-
-
-      <div class="brand-line">
-
-        <div
-          class="brand-diamond"
-        ></div>
-
-      </div>
-
-
-    </header>
-
-
-
-    <!-- ==========================================
-         APPLICATION
-    =========================================== -->
-
-    <main id="app">
-
-
-      <div class="panel">
-
-
-        <div class="panel-content">
-
-
-          <div class="eyebrow">
-
+          <div class="section-label">
             MEMBER REGISTRATION
-
           </div>
-
 
           <h1 class="title">
-
             Join WindsorKnot.
-
           </h1>
 
-
           <p class="description">
-
-            WindsorKnotへようこそ。
-
-            <br>
-
-            メンバー登録に必要な情報を
-            ご入力ください。
-
+            WindsorKnotへようこそ。<br>
+            メンバー登録に必要な情報をご入力ください。
           </p>
 
-
-
-          <div class="ornament">
-
-            <div
-              class="ornament-line"
-            ></div>
-
-            <div
-              class="ornament-diamond"
-            ></div>
-
+          <div class="section-divider">
+            <div class="divider-diamond"></div>
           </div>
 
-
-
-          <!-- NAME -->
-
-          <div class="field">
-
-
-            <label
-              class="label"
-              for="name"
-            >
-
-              <span class="field-number">
-                01
-              </span>
-
-              YOUR NAME
-
-              <span class="label-jp">
-                氏名
-              </span>
-
-            </label>
-
-
-            <input
-              id="name"
-              type="text"
-              autocomplete="name"
-              placeholder="宮﨑 航平"
-            >
-
-
-          </div>
-
-
-
-          <!-- ORGANIZATION -->
-
-          <div class="field">
-
-
-            <label
-              class="label"
-              for="organization"
-            >
-
-              <span class="field-number">
-                02
-              </span>
-
-              AFFILIATION
-
-              <span class="label-jp">
-                所属
-              </span>
-
-            </label>
-
-
-            <input
-              id="organization"
-              type="text"
-              autocomplete="organization"
-              placeholder="株式会社○○"
-            >
-
-
-          </div>
-
-
-
-          <!-- AGE -->
-
-          <div class="field">
-
-
-            <label
-              class="label"
-              for="age"
-            >
-
-              <span class="field-number">
-                03
-              </span>
-
-              AGE
-
-              <span class="label-jp">
-                年齢
-              </span>
-
-            </label>
-
-
-            <input
-              id="age"
-              type="number"
-              inputmode="numeric"
-              min="1"
-              max="120"
-              placeholder="30"
-            >
-
-
-          </div>
-
-
-
-          <!-- PHONE -->
-
-          <div class="field">
-
-
-            <label
-              class="label"
-              for="phone"
-            >
-
-              <span class="field-number">
-                04
-              </span>
-
-              PHONE
-
-              <span class="label-jp">
-                電話番号
-              </span>
-
-            </label>
-
-
-            <input
-              id="phone"
-              type="tel"
-              inputmode="tel"
-              autocomplete="tel"
-              placeholder="08012345678"
-            >
-
-
-          </div>
-
-
-
-          <!-- EMAIL -->
-
-          <div class="field">
-
-
-            <label
-              class="label"
-              for="email"
-            >
-
-              <span class="field-number">
-                05
-              </span>
-
-              EMAIL
-
-              <span class="label-jp">
-                メールアドレス
-              </span>
-
-            </label>
-
-
-            <input
-              id="email"
-              type="email"
-              inputmode="email"
-              autocomplete="email"
-              autocapitalize="none"
-              placeholder="example@gmail.com"
-            >
-
-
-          </div>
-
-
-
-          <!-- SUBMIT -->
-
-          <div class="submit-area">
-
-
-            <button
-              id="submitButton"
-              type="button"
-              class="submit-button"
-              onclick="registerMember()"
-            >
-
-              JOIN WINDSOR KNOT
-
-              <span class="submit-sub">
-                会員登録する
-              </span>
-
-            </button>
-
-
-          </div>
-
-
-
-          <div
-            id="errorBox"
-            class="error"
-          ></div>
-
-
-        </div>
-
-
-      </div>
-
-
-    </main>
-
-
-
-    <!-- ==========================================
-         FOOTER
-    =========================================== -->
-
-    <footer class="footer">
-
-
-      <div class="venue-line">
-
-        BAR ・ RESTAURANT ・ PARTY
-
-      </div>
-
-
-      <div class="notice">
-
-        ご入力いただいた情報は
-        WindsorKnotの会員管理のために使用します。
-
-      </div>
-
-
-    </footer>
-
-
-  </div>
-
-
-</div>
-
-
-
-<script>
-
-
-/* =====================================================
-   CONFIG
-===================================================== */
-
-
-/**
- * 既存KNOT PASSと同じGAS
- */
-const API_URL =
-  'https://script.google.com/macros/s/AKfycbzxcn3Esc_HHA_N13EDRoSeX4ItMobH6eaQ_874g1AV_I0CU6LUaczHbnP_6mDzf6mNCw/exec';
-
-
-/**
- * KNOT PASS
- */
-const KNOT_PASS_URL =
-  'https://liff.line.me/2011750249-fEwnWrPD';
-
-
-
-/* =====================================================
-   STATE
-===================================================== */
-
-
-let isSubmitting =
-  false;
-
-
-
-/* =====================================================
-   REGISTER
-===================================================== */
-
-
-async function registerMember() {
-
-
-  if (
-    isSubmitting
-  ) {
-
-    return;
-
-  }
-
-
-
-  const name =
-
-    document
-      .getElementById(
-        'name'
-      )
-      .value
-      .trim();
-
-
-  const organization =
-
-    document
-      .getElementById(
-        'organization'
-      )
-      .value
-      .trim();
-
-
-  const age =
-
-    document
-      .getElementById(
-        'age'
-      )
-      .value
-      .trim();
-
-
-  const phone =
-
-    document
-      .getElementById(
-        'phone'
-      )
-      .value
-      .trim();
-
-
-  const email =
-
-    document
-      .getElementById(
-        'email'
-      )
-      .value
-      .trim();
-
-
-
-  /**
-   * ==========================================
-   * VALIDATION
-   * ==========================================
-   */
-
-
-  hideError();
-
-
-
-  if (!name) {
-
-    showError(
-      '氏名を入力してください。'
-    );
-
-    return;
-
-  }
-
-
-  if (!organization) {
-
-    showError(
-      '所属を入力してください。'
-    );
-
-    return;
-
-  }
-
-
-  if (!age) {
-
-    showError(
-      '年齢を入力してください。'
-    );
-
-    return;
-
-  }
-
-
-  const ageNumber =
-    Number(age);
-
-
-  if (
-    !Number.isInteger(
-      ageNumber
-    ) ||
-    ageNumber < 1 ||
-    ageNumber > 120
-  ) {
-
-    showError(
-      '年齢を正しく入力してください。'
-    );
-
-    return;
-
-  }
-
-
-  const normalizedPhone =
-
-    phone.replace(
-      /[^0-9０-９]/g,
-      ''
-    );
-
-
-  if (!normalizedPhone) {
-
-    showError(
-      '電話番号を入力してください。'
-    );
-
-    return;
-
-  }
-
-
-  if (
-    normalizedPhone.length < 10 ||
-    normalizedPhone.length > 11
-  ) {
-
-    showError(
-      '電話番号を正しく入力してください。'
-    );
-
-    return;
-
-  }
-
-
-  const emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-  if (
-    !email ||
-    !emailPattern.test(
-      email
-    )
-  ) {
-
-    showError(
-      'メールアドレスを正しく入力してください。'
-    );
-
-    return;
-
-  }
-
-
-
-  /**
-   * ==========================================
-   * BUTTON
-   * ==========================================
-   */
-
-
-  const button =
-
-    document
-      .getElementById(
-        'submitButton'
-      );
-
-
-  isSubmitting =
-    true;
-
-
-  button.disabled =
-    true;
-
-
-  button.innerHTML = `
-
-    REGISTERING...
-
-    <span class="submit-sub">
-
-      登録しています
-
-    </span>
-
-  `;
-
-
-
-  /**
-   * ==========================================
-   * API
-   * ==========================================
-   */
-
-
-  try {
-
-
-    const response =
-
-      await fetch(
-
-        API_URL,
-
-        {
-
-          method:
-            'POST',
-
-          headers: {
-
-            'Content-Type':
-              'text/plain;charset=utf-8'
-
-          },
-
-          body:
-
-            JSON.stringify({
-
-              action:
-                'registerMember',
-
-              name:
-                name,
-
-              organization:
-                organization,
-
-              age:
-                ageNumber,
-
-              phone:
-                phone,
-
-              email:
-                email
-
-            })
-
-        }
-
-      );
-
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        '登録処理に失敗しました。'
-      );
-
-    }
-
-
-
-    const data =
-      await response.json();
-
-
-
-    /**
-     * ==========================================
-     * SUCCESS
-     * ==========================================
-     */
-
-
-    if (
-      data.success &&
-      data.status ===
-        'MEMBER_REGISTERED'
-    ) {
-
-
-      showSuccess(
-        data.member
-      );
-
-
-      return;
-
-    }
-
-
-
-    /**
-     * ==========================================
-     * API ERROR
-     * ==========================================
-     */
-
-
-    throw new Error(
-
-      data.message ||
-
-      '会員登録に失敗しました。'
-
-    );
-
-
-  } catch (error) {
-
-
-    console.error(
-      'REGISTER ERROR',
-      error
-    );
-
-
-    showError(
-
-      error.message ||
-
-      '通信エラーが発生しました。もう一度お試しください。'
-
-    );
-
-
-    isSubmitting =
-      false;
-
-
-    button.disabled =
-      false;
-
-
-    button.innerHTML = `
-
-      JOIN WINDSOR KNOT
-
-      <span class="submit-sub">
-
-        会員登録する
-
-      </span>
-
-    `;
-
-  }
-
-}
-
-
-
-/* =====================================================
-   SUCCESS
-===================================================== */
-
-
-function showSuccess(
-  member
-) {
-
-
-  const memberNo =
-
-    escapeHtml(
-
-      member &&
-      member.memberNo
-
-        ? member.memberNo
-
-        : ''
-
-    );
-
-
-  const name =
-
-    escapeHtml(
-
-      member &&
-      member.name
-
-        ? member.name
-
-        : ''
-
-    );
-
-
-  document
-    .getElementById(
-      'app'
-    )
-    .innerHTML = `
-
-
-      <div class="panel">
-
-
-        <div class="panel-content">
-
-
-          <div class="success">
-
-
-            <div class="success-mark">
-
-              ✓
-
-            </div>
-
-
-            <div class="success-eyebrow">
-
-              MEMBERSHIP REGISTERED
-
-            </div>
-
-
-            <div class="success-title">
-
-              WELCOME TO
-              <br>
-              WINDSOR KNOT.
-
-            </div>
-
-
-            <div class="success-description">
-
-              ${name} 様
-
-              <br>
-
-              会員登録が完了しました。
-
-            </div>
-
-
-
-            <div class="member-number-box">
-
-
-              <div class="member-number-label">
-
-                YOUR MEMBER No.
-
+          <form id="registrationForm">
+
+            <!-- NAME -->
+            <div class="field">
+              <div class="field-head">
+                <span class="field-number">01</span>
+                <span class="field-label-en">YOUR NAME</span>
+                <span class="field-label-ja">氏名</span>
+                <span class="required">REQUIRED</span>
               </div>
 
+              <input
+                id="name"
+                class="input"
+                type="text"
+                placeholder="宮崎 航平"
+                autocomplete="name"
+                required
+              >
+            </div>
 
-              <div class="member-number">
-
-                ${memberNo}
-
+            <!-- AFFILIATION -->
+            <div class="field">
+              <div class="field-head">
+                <span class="field-number">02</span>
+                <span class="field-label-en">AFFILIATION</span>
+                <span class="field-label-ja">所属</span>
+                <span class="required">REQUIRED</span>
               </div>
 
-
+              <input
+                id="affiliation"
+                class="input"
+                type="text"
+                placeholder="株式会社〇〇"
+                autocomplete="organization"
+                required
+              >
             </div>
 
+            <!-- AGE -->
+            <div class="field">
+              <div class="field-head">
+                <span class="field-number">03</span>
+                <span class="field-label-en">AGE</span>
+                <span class="field-label-ja">年齢</span>
+                <span class="required">REQUIRED</span>
+              </div>
 
-
-            <div class="important">
-
-              会員番号はKNOT PASSとの
-              初回連携時に使用します。
-
-              <br>
-
-              この番号をお控えください。
-
+              <input
+                id="age"
+                class="input"
+                type="number"
+                inputmode="numeric"
+                min="18"
+                max="120"
+                placeholder="30"
+                required
+              >
             </div>
 
+            <!-- PHONE -->
+            <div class="field">
+              <div class="field-head">
+                <span class="field-number">04</span>
+                <span class="field-label-en">PHONE</span>
+                <span class="field-label-ja">電話番号</span>
+                <span class="required">REQUIRED</span>
+              </div>
 
+              <input
+                id="phone"
+                class="input"
+                type="tel"
+                inputmode="tel"
+                placeholder="08012345678"
+                autocomplete="tel"
+                required
+              >
+            </div>
 
-            <div
-              style="
-                margin-top:28px;
-              "
-            >
+            <!-- EMAIL -->
+            <div class="field">
+              <div class="field-head">
+                <span class="field-number">05</span>
+                <span class="field-label-en">EMAIL</span>
+                <span class="field-label-ja">メールアドレス</span>
+                <span class="required">REQUIRED</span>
+              </div>
 
+              <input
+                id="email"
+                class="input"
+                type="email"
+                inputmode="email"
+                placeholder="example@email.com"
+                autocomplete="email"
+                required
+              >
+            </div>
+
+            <div class="submit-area">
 
               <button
-                type="button"
+                id="submitButton"
                 class="submit-button"
-                onclick="openKnotPass()"
+                type="submit"
               >
-
-                OPEN KNOT PASS
-
-                <span class="submit-sub">
-
-                  会員証を開く
-
+                <span
+                  id="buttonMain"
+                  class="button-main"
+                >
+                  REGISTER
                 </span>
 
+                <span
+                  id="buttonSub"
+                  class="button-sub"
+                >
+                  JOIN WINDSOR KNOT
+                </span>
               </button>
 
+              <div
+                id="status"
+                class="status"
+              ></div>
+
+              <p class="privacy">
+                ご入力いただいた情報は、<br>
+                WindsorKnotの会員管理・運営のために使用します。
+              </p>
 
             </div>
 
-
-          </div>
-
+          </form>
 
         </div>
 
+        <!-- SUCCESS -->
+        <div
+          id="successScreen"
+          class="success-screen"
+        >
 
-      </div>
+          <div class="success-symbol">
+            <div class="success-symbol-inner"></div>
+          </div>
 
-  `;
+          <div class="success-label">
+            REGISTRATION COMPLETE
+          </div>
+
+          <h2 class="success-title">
+            Welcome to<br>
+            WindsorKnot.
+          </h2>
+
+          <p class="success-message">
+            メンバー登録が完了しました。<br>
+            WindsorKnotでお会いできることを<br>
+            楽しみにしています。
+          </p>
+
+          <div class="member-number-box">
+            <div class="member-number-label">
+              MEMBER No.
+            </div>
+
+            <div
+              id="memberNumber"
+              class="member-number"
+            >
+              —
+            </div>
+          </div>
+
+          <div
+            id="registeredName"
+            class="success-name"
+          ></div>
+
+          <p class="success-note">
+            会員情報はWindsorKnot会員名簿へ登録されました。<br>
+            MEMBER No. は会員確認の際に使用する場合があります。
+          </p>
+
+        </div>
+
+      </section>
+
+      <footer class="footer">
+        <div class="footer-brand">
+          WindsorKnot
+        </div>
+
+        <div class="footer-copy">
+          MEMBERSHIP · MATSUE
+        </div>
+      </footer>
+
+    </div>
+  </main>
 
 
-  window.scrollTo({
+  <script>
+    /* =========================================================
+       WINDSOR KNOT
+       MEMBER REGISTRATION
+       ========================================================= */
 
-    top:
-      0,
-
-    behavior:
-      'smooth'
-
-  });
-
-}
+    const GAS_URL =
+      "https://script.google.com/macros/s/AKfycbzxcn3Esc_HHA_N13EDRoSeX4ItMobH6eaQ_874g1AV_I0CU6LUaczHbnP_6mDzf6mNCw/exec";
 
 
+    const form =
+      document.getElementById("registrationForm");
 
-/* =====================================================
-   OPEN KNOT PASS
-===================================================== */
+    const submitButton =
+      document.getElementById("submitButton");
+
+    const buttonMain =
+      document.getElementById("buttonMain");
+
+    const buttonSub =
+      document.getElementById("buttonSub");
+
+    const statusBox =
+      document.getElementById("status");
+
+    const registrationContent =
+      document.getElementById("registrationContent");
+
+    const successScreen =
+      document.getElementById("successScreen");
+
+    const memberNumber =
+      document.getElementById("memberNumber");
+
+    const registeredName =
+      document.getElementById("registeredName");
 
 
-function openKnotPass() {
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    function showStatus(message, isError = false) {
+
+      statusBox.textContent = message;
+
+      statusBox.className =
+        isError
+          ? "status show error"
+          : "status show";
+    }
 
 
-  window.location.href =
-    KNOT_PASS_URL;
+    function clearStatus() {
 
-}
-
-
-
-/* =====================================================
-   ERROR
-===================================================== */
+      statusBox.textContent = "";
+      statusBox.className = "status";
+    }
 
 
-function showError(
-  message
-) {
+    /* =========================================================
+       BUTTON
+       ========================================================= */
+
+    function setLoading(isLoading) {
+
+      submitButton.disabled = isLoading;
+
+      if (isLoading) {
+
+        buttonMain.textContent =
+          "REGISTERING...";
+
+        buttonSub.textContent =
+          "PLEASE WAIT";
+
+      } else {
+
+        buttonMain.textContent =
+          "REGISTER";
+
+        buttonSub.textContent =
+          "JOIN WINDSOR KNOT";
+      }
+    }
 
 
-  const box =
+    /* =========================================================
+       NORMALIZE
+       ========================================================= */
 
-    document
-      .getElementById(
-        'errorBox'
+    function normalizePhone(value) {
+
+      return String(value || "")
+        .replace(/[^\d]/g, "");
+    }
+
+
+    /* =========================================================
+       FORM SUBMIT
+       ========================================================= */
+
+    form.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+        clearStatus();
+
+
+        /* -----------------------------
+           VALUES
+        ----------------------------- */
+
+        const name =
+          document
+            .getElementById("name")
+            .value
+            .trim();
+
+        const affiliation =
+          document
+            .getElementById("affiliation")
+            .value
+            .trim();
+
+        const age =
+          document
+            .getElementById("age")
+            .value
+            .trim();
+
+        const phone =
+          normalizePhone(
+            document
+              .getElementById("phone")
+              .value
+          );
+
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        /* -----------------------------
+           VALIDATION
+        ----------------------------- */
+
+        if (
+          !name ||
+          !affiliation ||
+          !age ||
+          !phone ||
+          !email
+        ) {
+
+          showStatus(
+            "すべての項目をご入力ください。",
+            true
+          );
+
+          return;
+        }
+
+
+        const ageNumber =
+          Number(age);
+
+        if (
+          !Number.isFinite(ageNumber) ||
+          ageNumber < 18 ||
+          ageNumber > 120
+        ) {
+
+          showStatus(
+            "年齢を正しく入力してください。",
+            true
+          );
+
+          return;
+        }
+
+
+        if (
+          phone.length < 10 ||
+          phone.length > 11
+        ) {
+
+          showStatus(
+            "電話番号を正しく入力してください。",
+            true
+          );
+
+          return;
+        }
+
+
+        const emailPattern =
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (
+          !emailPattern.test(email)
+        ) {
+
+          showStatus(
+            "メールアドレスを正しく入力してください。",
+            true
+          );
+
+          return;
+        }
+
+
+        /* -----------------------------
+           SEND
+        ----------------------------- */
+
+        setLoading(true);
+
+        showStatus(
+          "会員情報を登録しています..."
+        );
+
+
+        try {
+
+          const payload = {
+            action: "registerMember",
+            name: name,
+            affiliation: affiliation,
+            age: ageNumber,
+            phone: phone,
+            email: email
+          };
+
+
+          const response =
+            await fetch(
+              GAS_URL,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "text/plain;charset=utf-8"
+                },
+
+                body:
+                  JSON.stringify(payload)
+              }
+            );
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              "HTTP_ERROR_" +
+              response.status
+            );
+          }
+
+
+          const text =
+            await response.text();
+
+
+          let result;
+
+          try {
+
+            result =
+              JSON.parse(text);
+
+          } catch (parseError) {
+
+            console.error(
+              "GAS RESPONSE:",
+              text
+            );
+
+            throw new Error(
+              "SERVER_RESPONSE_ERROR"
+            );
+          }
+
+
+          console.log(
+            "REGISTER RESULT:",
+            result
+          );
+
+
+          /* -----------------------------
+             SUCCESS
+          ----------------------------- */
+
+          if (result.ok === true) {
+
+            showSuccess(
+              result,
+              name
+            );
+
+            return;
+          }
+
+
+          /* -----------------------------
+             DUPLICATE
+          ----------------------------- */
+
+          if (
+            result.error ===
+            "DUPLICATE_MEMBER"
+          ) {
+
+            let message =
+              "すでに登録されている会員情報です。";
+
+
+            if (
+              result.duplicateFields &&
+              Array.isArray(
+                result.duplicateFields
+              )
+            ) {
+
+              if (
+                result.duplicateFields
+                  .includes("phone") &&
+                result.duplicateFields
+                  .includes("email")
+              ) {
+
+                message =
+                  "この電話番号とメールアドレスは、すでに会員登録されています。";
+
+              } else if (
+                result.duplicateFields
+                  .includes("phone")
+              ) {
+
+                message =
+                  "この電話番号は、すでに会員登録されています。";
+
+              } else if (
+                result.duplicateFields
+                  .includes("email")
+              ) {
+
+                message =
+                  "このメールアドレスは、すでに会員登録されています。";
+              }
+            }
+
+
+            showStatus(
+              message,
+              true
+            );
+
+            return;
+          }
+
+
+          /* -----------------------------
+             OTHER GAS ERROR
+          ----------------------------- */
+
+          if (result.message) {
+
+            throw new Error(
+              result.message
+            );
+          }
+
+
+          throw new Error(
+            result.error ||
+            "UNKNOWN_ERROR"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "REGISTER ERROR:",
+            error
+          );
+
+
+          let message =
+            "登録処理中にエラーが発生しました。時間をおいて、もう一度お試しください。";
+
+
+          if (
+            String(error.message)
+              .includes(
+                "Failed to fetch"
+              )
+          ) {
+
+            message =
+              "登録サーバーとの通信に失敗しました。通信環境をご確認のうえ、もう一度お試しください。";
+          }
+
+
+          showStatus(
+            message,
+            true
+          );
+
+
+        } finally {
+
+          setLoading(false);
+        }
+      }
+    );
+
+
+    /* =========================================================
+       SUCCESS SCREEN
+       ========================================================= */
+
+    function showSuccess(
+      result,
+      name
+    ) {
+
+      registrationContent.style.display =
+        "none";
+
+      memberNumber.textContent =
+        result.memberNo ??
+        result.memberNumber ??
+        "—";
+
+      registeredName.textContent =
+        name + " 様";
+
+      successScreen.classList.add(
+        "show"
       );
 
 
-  if (!box) {
-
-    return;
-
-  }
-
-
-  box.textContent =
-    message;
-
-
-  box.style.display =
-    'block';
-
-
-  box.scrollIntoView({
-
-    behavior:
-      'smooth',
-
-    block:
-      'center'
-
-  });
-
-}
-
-
-
-function hideError() {
-
-
-  const box =
-
-    document
-      .getElementById(
-        'errorBox'
-      );
-
-
-  if (!box) {
-
-    return;
-
-  }
-
-
-  box.style.display =
-    'none';
-
-
-  box.textContent =
-    '';
-
-}
-
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-
-function escapeHtml(
-  value
-) {
-
-
-  return String(
-
-    value == null
-
-      ? ''
-
-      : value
-
-  )
-
-  .replace(
-    /&/g,
-    '&amp;'
-  )
-
-  .replace(
-    /</g,
-    '&lt;'
-  )
-
-  .replace(
-    />/g,
-    '&gt;'
-  )
-
-  .replace(
-    /"/g,
-    '&quot;'
-  )
-
-  .replace(
-    /'/g,
-    '&#039;'
-  );
-
-}
-
-
-</script>
-
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  </script>
 
 </body>
-
 </html>
