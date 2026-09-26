@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>KNOT PASS</title>
+
+  <!-- LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f3f1ec;
+      color: #171717;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 50px 22px 80px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .brand-small {
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 31px;
+      font-weight: 700;
+      letter-spacing: 3px;
+    }
+
+    .panel {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 30px 26px;
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.06);
+    }
+
+    h2 {
+      margin: 0 0 30px;
+      font-size: 20px;
+    }
+
+    .step {
+      padding: 20px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .detail {
+      margin-top: 10px;
+      color: #777;
+      font-size: 12px;
+      line-height: 1.7;
+      word-break: break-all;
+    }
+
+    .ok {
+      color: #171717;
+    }
+
+    .error {
+      color: #a83226;
+    }
+
+    .waiting {
+      color: #aaa;
+    }
+
+    .success-box {
+      margin-top: 30px;
+      padding: 25px;
+      border-radius: 16px;
+      background: #171717;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .success-title {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .success-text {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.8;
+      opacity: .75;
+    }
+
+    .error-box {
+      margin-top: 30px;
+      padding: 22px;
+      border: 1px solid #e5b5b0;
+      background: #fff5f4;
+      border-radius: 16px;
+      color: #8d2d24;
+      font-size: 12px;
+      line-height: 1.8;
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-small">
+      WINDSOR KNOT
+    </div>
+
+    <div class="brand-title">
+      KNOT PASS
+    </div>
+  </div>
+
+
+  <div class="panel">
+
+    <h2>LIFF 接続テスト</h2>
+
+
+    <div class="step">
+      <div
+        id="step1"
+        class="step-title ok"
+      >
+        ✓ STEP 1：ページ起動 OK
+      </div>
+
+      <div class="detail">
+        GitHub Pagesからページを読み込んでいます
+      </div>
+    </div>
+
+
+    <div class="step">
+      <div
+        id="step2"
+        class="step-title waiting"
+      >
+        STEP 2：LIFF SDK確認
+      </div>
+
+      <div
+        id="step2detail"
+        class="detail"
+      ></div>
+    </div>
+
+
+    <div class="step">
+      <div
+        id="step3"
+        class="step-title waiting"
+      >
+        STEP 3：LIFF初期化
+      </div>
+
+      <div
+        id="step3detail"
+        class="detail"
+      ></div>
+    </div>
+
+
+    <div class="step">
+      <div
+        id="step4"
+        class="step-title waiting"
+      >
+        STEP 4：LINEログイン確認
+      </div>
+
+      <div
+        id="step4detail"
+        class="detail"
+      ></div>
+    </div>
+
+
+    <div class="step">
+      <div
+        id="step5"
+        class="step-title waiting"
+      >
+        STEP 5：プロフィール取得
+      </div>
+
+      <div
+        id="step5detail"
+        class="detail"
+      ></div>
+    </div>
+
+
+    <div class="step">
+      <div
+        id="step6"
+        class="step-title waiting"
+      >
+        STEP 6：LINE User ID取得
+      </div>
+
+      <div
+        id="step6detail"
+        class="detail"
+      ></div>
+    </div>
+
+  </div>
+
+
+  <div id="result"></div>
+
+</div>
+
+
+<script>
+
+  const LIFF_ID =
+    '2011750249-fEwnWrPD';
+
+
+  window.addEventListener(
+    'load',
+    start
+  );
+
+
+  async function start() {
+
+    try {
+
+      /*
+       * STEP 2
+       * SDK確認
+       */
+
+      if (
+        typeof liff === 'undefined'
+      ) {
+
+        setError(
+          2,
+          'LIFF SDKを読み込めませんでした。'
+        );
+
+        return;
+      }
+
+
+      setOK(
+        2,
+        'LIFF SDK読込 OK',
+        'LIFF SDKが正常に認識されています'
+      );
+
+
+      /*
+       * STEP 3
+       * LIFF初期化
+       */
+
+      await liff.init({
+        liffId: LIFF_ID
+      });
+
+
+      setOK(
+        3,
+        'LIFF初期化 OK',
+        'LIFF ID：' + LIFF_ID
+      );
+
+
+      /*
+       * STEP 4
+       * ログイン確認
+       */
+
+      if (!liff.isLoggedIn()) {
+
+        document
+          .getElementById('step4')
+          .textContent =
+            'STEP 4：LINEログインへ移動';
+
+        document
+          .getElementById('step4detail')
+          .textContent =
+            'LINEログインを開始します。';
+
+
+        liff.login();
+
+        return;
+      }
+
+
+      setOK(
+        4,
+        'LINEログイン確認 OK',
+        'LINEにログインしています'
+      );
+
+
+      /*
+       * STEP 5
+       * プロフィール取得
+       */
+
+      const profile =
+        await liff.getProfile();
+
+
+      setOK(
+        5,
+        'プロフィール取得 OK',
+        '表示名：' +
+        (
+          profile.displayName ||
+          '取得済み'
+        )
+      );
+
+
+      /*
+       * STEP 6
+       * User ID取得
+       */
+
+      if (!profile.userId) {
+
+        setError(
+          6,
+          'LINE User IDを取得できませんでした。'
+        );
+
+        return;
+      }
+
+
+      setOK(
+        6,
+        'LINE User ID取得 OK',
+        maskUserId(profile.userId)
+      );
+
+
+      /*
+       * 成功
+       */
+
+      document
+        .getElementById('result')
+        .innerHTML = `
+
+          <div class="success-box">
+
+            <div class="success-title">
+              LIFF CONNECTION OK
+            </div>
+
+            <div class="success-text">
+
+              LINEとの接続に成功しました。
+
+              <br>
+
+              次にGoogleスプレッドシートの
+              会員名簿と接続します。
+
+            </div>
+
+          </div>
+
+        `;
+
+
+    } catch (error) {
+
+      console.error(error);
+
+
+      document
+        .getElementById('result')
+        .innerHTML = `
+
+          <div class="error-box">
+
+            <strong>
+              LIFF接続エラー
+            </strong>
+
+            <br><br>
+
+            ${escapeHtml(
+              error &&
+              error.message
+                ? error.message
+                : String(error)
+            )}
+
+            <br><br>
+
+            CURRENT URL
+
+            <br>
+
+            ${escapeHtml(
+              window.location.href
+            )}
+
+          </div>
+
+        `;
+
+    }
+
+  }
+
+
+  function setOK(
+    number,
+    title,
+    detail
+  ) {
+
+    const titleElement =
+      document.getElementById(
+        'step' + number
+      );
+
+    const detailElement =
+      document.getElementById(
+        'step' +
+        number +
+        'detail'
+      );
+
+
+    titleElement.className =
+      'step-title ok';
+
+    titleElement.textContent =
+      '✓ STEP ' +
+      number +
+      '：' +
+      title;
+
+
+    detailElement.textContent =
+      detail || '';
+
+  }
+
+
+  function setError(
+    number,
+    message
+  ) {
+
+    const titleElement =
+      document.getElementById(
+        'step' + number
+      );
+
+    const detailElement =
+      document.getElementById(
+        'step' +
+        number +
+        'detail'
+      );
+
+
+    titleElement.className =
+      'step-title error';
+
+    titleElement.textContent =
+      '× STEP ' +
+      number +
+      '：エラー';
+
+
+    detailElement.textContent =
+      message;
+
+  }
+
+
+  function maskUserId(userId) {
+
+    if (!userId) {
+      return '';
+    }
+
+    if (userId.length < 12) {
+      return '取得成功';
+    }
+
+    return (
+      userId.substring(0, 6) +
+      '••••••••' +
+      userId.substring(
+        userId.length - 4
+      )
+    );
+
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value || '')
+
+      .replace(/&/g, '&amp;')
+
+      .replace(/</g, '&lt;')
+
+      .replace(/>/g, '&gt;')
+
+      .replace(/"/g, '&quot;')
+
+      .replace(/'/g, '&#039;');
+
+  }
+
+</script>
+
+</body>
+
+</html>
