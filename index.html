@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>KNOT PASS</title>
 
-  <!-- LINE LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
@@ -33,541 +28,897 @@
     }
 
     .container {
+      width: 100%;
       max-width: 480px;
       margin: 0 auto;
-      padding: 50px 22px 80px;
+      padding:
+        calc(36px + env(safe-area-inset-top))
+        22px
+        70px;
     }
 
     .brand {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 32px;
     }
 
     .brand-small {
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 4px;
-      margin-bottom: 10px;
+      margin-bottom: 9px;
     }
 
     .brand-title {
-      font-size: 31px;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 4px;
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: 24px;
+      padding: 30px 25px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.05);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 45px 10px;
+    }
+
+    .loading-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .loading-text {
+      color: #888;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      margin: 0 auto 25px;
+      border: 3px solid #ddd;
+      border-top-color: #171717;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .auth-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .auth-description {
+      margin: 0 0 30px;
+      color: #777;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      height: 52px;
+      border: 1px solid #d9d9d9;
+      border-radius: 10px;
+      padding: 0 15px;
+      background: #fff;
+      color: #171717;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #171717;
+    }
+
+    button {
+      width: 100%;
+      height: 54px;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 10px;
+      background: #171717;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .5;
+    }
+
+    .error {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #fff2f0;
+      color: #9c3026;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      min-height: 530px;
+      border-radius: 26px;
+      padding: 32px 27px;
+      background: #171717;
+      color: #fff;
+      box-shadow: 0 18px 45px rgba(0,0,0,.16);
+    }
+
+    .card:after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -145px;
+      bottom: -115px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+    }
+
+    .card-brand {
+      font-size: 10px;
+      letter-spacing: 3px;
+      opacity: .65;
+    }
+
+    .card-title {
+      margin-top: 7px;
+      font-size: 23px;
       font-weight: 700;
       letter-spacing: 3px;
     }
 
-    .panel {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 30px 26px;
-      box-shadow:
-        0 10px 30px
-        rgba(0,0,0,.06);
+    .member-label {
+      margin-top: 75px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      opacity: .5;
     }
 
-    h2 {
-      margin: 0 0 30px;
-      font-size: 20px;
-    }
-
-    .step {
-      padding: 20px 0;
-      border-bottom: 1px solid #e5e5e5;
-    }
-
-    .step:last-child {
-      border-bottom: none;
-    }
-
-    .step-title {
-      font-size: 16px;
+    .member-name {
+      margin-top: 8px;
+      font-size: 29px;
       font-weight: 600;
-    }
-
-    .detail {
-      margin-top: 10px;
-      color: #777;
-      font-size: 12px;
-      line-height: 1.7;
-      word-break: break-all;
-    }
-
-    .ok {
-      color: #171717;
-    }
-
-    .error {
-      color: #a83226;
-    }
-
-    .waiting {
-      color: #aaa;
-    }
-
-    .success-box {
-      margin-top: 30px;
-      padding: 25px;
-      border-radius: 16px;
-      background: #171717;
-      color: #ffffff;
-      text-align: center;
-    }
-
-    .success-title {
-      font-size: 21px;
-      font-weight: 700;
       letter-spacing: 1px;
     }
 
-    .success-text {
+    .organization {
+      min-height: 44px;
       margin-top: 12px;
-      font-size: 12px;
-      line-height: 1.8;
-      opacity: .75;
+      font-size: 13px;
+      line-height: 1.7;
+      opacity: .65;
     }
 
-    .error-box {
-      margin-top: 30px;
-      padding: 22px;
-      border: 1px solid #e5b5b0;
-      background: #fff5f4;
-      border-radius: 16px;
-      color: #8d2d24;
-      font-size: 12px;
-      line-height: 1.8;
-      word-break: break-all;
+    .divider {
+      height: 1px;
+      margin: 32px 0;
+      background: rgba(255,255,255,.16);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .data-label {
+      margin-bottom: 8px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      opacity: .45;
+    }
+
+    .data-value {
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .visits {
+      font-size: 36px;
+      font-weight: 600;
+    }
+
+    .card-footer {
+      position: absolute;
+      left: 27px;
+      bottom: 28px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      opacity: .35;
+    }
+
+    .notice {
+      margin-top: 22px;
+      text-align: center;
+      color: #888;
+      font-size: 11px;
+      line-height: 1.7;
     }
   </style>
 </head>
-
 
 <body>
 
 <div class="container">
 
   <div class="brand">
-    <div class="brand-small">
-      WINDSOR KNOT
-    </div>
-
-    <div class="brand-title">
-      KNOT PASS
-    </div>
+    <div class="brand-small">WINDSOR KNOT</div>
+    <div class="brand-title">KNOT PASS</div>
   </div>
 
-
-  <div class="panel">
-
-    <h2>LIFF 接続テスト</h2>
-
-
-    <div class="step">
-      <div
-        id="step1"
-        class="step-title ok"
-      >
-        ✓ STEP 1：ページ起動 OK
-      </div>
-
-      <div class="detail">
-        GitHub Pagesからページを読み込んでいます
+  <div id="app">
+    <div class="panel">
+      <div class="loading">
+        <div class="spinner"></div>
+        <div class="loading-title">
+          KNOT PASSを確認しています
+        </div>
+        <div class="loading-text">
+          LINEアカウントと会員情報を確認しています。
+        </div>
       </div>
     </div>
-
-
-    <div class="step">
-      <div
-        id="step2"
-        class="step-title waiting"
-      >
-        STEP 2：LIFF SDK確認
-      </div>
-
-      <div
-        id="step2detail"
-        class="detail"
-      ></div>
-    </div>
-
-
-    <div class="step">
-      <div
-        id="step3"
-        class="step-title waiting"
-      >
-        STEP 3：LIFF初期化
-      </div>
-
-      <div
-        id="step3detail"
-        class="detail"
-      ></div>
-    </div>
-
-
-    <div class="step">
-      <div
-        id="step4"
-        class="step-title waiting"
-      >
-        STEP 4：LINEログイン確認
-      </div>
-
-      <div
-        id="step4detail"
-        class="detail"
-      ></div>
-    </div>
-
-
-    <div class="step">
-      <div
-        id="step5"
-        class="step-title waiting"
-      >
-        STEP 5：プロフィール取得
-      </div>
-
-      <div
-        id="step5detail"
-        class="detail"
-      ></div>
-    </div>
-
-
-    <div class="step">
-      <div
-        id="step6"
-        class="step-title waiting"
-      >
-        STEP 6：LINE User ID取得
-      </div>
-
-      <div
-        id="step6detail"
-        class="detail"
-      ></div>
-    </div>
-
   </div>
-
-
-  <div id="result"></div>
 
 </div>
 
 
 <script>
 
-  const LIFF_ID =
-    '2011750249-fEwnWrPD';
+const LIFF_ID =
+  '2011750249-fEwnWrPD';
+
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbzxcn3Esc_HHA_N13EDRoSeX4ItMobH6eaQ_874g1AV_I0CU6LUaczHbnP_6mDzf6mNCw/exec';
+
+let currentLineUserId = '';
 
 
-  window.addEventListener(
-    'load',
-    start
-  );
+window.addEventListener('load', initialize);
 
 
-  async function start() {
+async function initialize() {
 
-    try {
+  try {
 
-      /*
-       * STEP 2
-       * SDK確認
-       */
-
-      if (
-        typeof liff === 'undefined'
-      ) {
-
-        setError(
-          2,
-          'LIFF SDKを読み込めませんでした。'
-        );
-
-        return;
-      }
+    await liff.init({
+      liffId: LIFF_ID
+    });
 
 
-      setOK(
-        2,
-        'LIFF SDK読込 OK',
-        'LIFF SDKが正常に認識されています'
+    if (!liff.isLoggedIn()) {
+
+      liff.login();
+
+      return;
+    }
+
+
+    const profile =
+      await liff.getProfile();
+
+
+    currentLineUserId =
+      profile.userId;
+
+
+    if (!currentLineUserId) {
+
+      throw new Error(
+        'LINE User IDを取得できませんでした。'
+      );
+
+    }
+
+
+    await checkMember();
+
+
+  } catch (error) {
+
+    showFatalError(
+      error.message ||
+      String(error)
+    );
+
+  }
+
+}
+
+
+/**
+ * LINE User IDで
+ * 既存会員連携を検索
+ */
+async function checkMember() {
+
+  try {
+
+    showLoading(
+      '会員情報を確認しています'
+    );
+
+
+    const url =
+      API_URL +
+      '?action=getMember' +
+      '&lineUserId=' +
+      encodeURIComponent(
+        currentLineUserId
       );
 
 
-      /*
-       * STEP 3
-       * LIFF初期化
-       */
-
-      await liff.init({
-        liffId: LIFF_ID
-      });
+    const response =
+      await fetch(url);
 
 
-      setOK(
-        3,
-        'LIFF初期化 OK',
-        'LIFF ID：' + LIFF_ID
+    if (!response.ok) {
+
+      throw new Error(
+        '会員情報の取得に失敗しました。'
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      data.success &&
+      (
+        data.status === 'MEMBER_FOUND' ||
+        data.status === 'ALREADY_LINKED'
+      )
+    ) {
+
+      showMemberCard(
+        data.member
+      );
+
+      return;
+    }
+
+
+    if (
+      data.status ===
+      'MEMBER_NOT_LINKED'
+    ) {
+
+      showLinkForm();
+
+      return;
+    }
+
+
+    throw new Error(
+      data.message ||
+      '会員情報を確認できませんでした。'
+    );
+
+
+  } catch (error) {
+
+    showFatalError(
+      error.message ||
+      String(error)
+    );
+
+  }
+
+}
+
+
+/**
+ * 初回連携フォーム
+ */
+function showLinkForm() {
+
+  document
+    .getElementById('app')
+    .innerHTML = `
+
+      <div class="panel">
+
+        <h2 class="auth-title">
+          会員情報を連携
+        </h2>
+
+        <p class="auth-description">
+          初回のみ会員情報の確認が必要です。
+          <br>
+          会員番号と登録済みの電話番号を入力してください。
+        </p>
+
+
+        <div class="field">
+
+          <label class="label">
+            会員番号
+          </label>
+
+          <input
+            id="memberNo"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="例：1"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label class="label">
+            電話番号
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="例：08012345678"
+          >
+
+        </div>
+
+
+        <button
+          id="linkButton"
+          onclick="linkMember()"
+        >
+          KNOT PASSを表示
+        </button>
+
+
+        <div
+          id="formError"
+          class="error"
+        ></div>
+
+      </div>
+
+      <div class="notice">
+        入力情報は会員本人確認のために使用します。
+      </div>
+
+    `;
+
+}
+
+
+/**
+ * 初回LINE連携
+ */
+async function linkMember() {
+
+  const memberNo =
+    document
+      .getElementById('memberNo')
+      .value
+      .trim();
+
+  const phone =
+    document
+      .getElementById('phone')
+      .value
+      .trim();
+
+  const button =
+    document
+      .getElementById('linkButton');
+
+  const errorBox =
+    document
+      .getElementById('formError');
+
+
+  errorBox.style.display =
+    'none';
+
+
+  if (!memberNo) {
+
+    showFormError(
+      '会員番号を入力してください。'
+    );
+
+    return;
+  }
+
+
+  if (!phone) {
+
+    showFormError(
+      '電話番号を入力してください。'
+    );
+
+    return;
+  }
+
+
+  button.disabled = true;
+
+  button.textContent =
+    '確認しています...';
+
+
+  try {
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'text/plain;charset=utf-8'
+          },
+
+          body: JSON.stringify({
+            action: 'linkMember',
+            memberNo: memberNo,
+            phone: phone,
+            lineUserId:
+              currentLineUserId
+          })
+        }
       );
 
 
-      /*
-       * STEP 4
-       * ログイン確認
-       */
-
-      if (!liff.isLoggedIn()) {
-
-        document
-          .getElementById('step4')
-          .textContent =
-            'STEP 4：LINEログインへ移動';
-
-        document
-          .getElementById('step4detail')
-          .textContent =
-            'LINEログインを開始します。';
+    const data =
+      await response.json();
 
 
-        liff.login();
+    if (
+      data.success &&
+      (
+        data.status === 'LINK_SUCCESS' ||
+        data.status === 'ALREADY_LINKED'
+      )
+    ) {
 
-        return;
-      }
-
-
-      setOK(
-        4,
-        'LINEログイン確認 OK',
-        'LINEにログインしています'
+      showMemberCard(
+        data.member
       );
 
-
-      /*
-       * STEP 5
-       * プロフィール取得
-       */
-
-      const profile =
-        await liff.getProfile();
+      return;
+    }
 
 
-      setOK(
-        5,
-        'プロフィール取得 OK',
-        '表示名：' +
-        (
-          profile.displayName ||
-          '取得済み'
+    showFormError(
+      data.message ||
+      '会員情報を確認できませんでした。'
+    );
+
+
+  } catch (error) {
+
+    showFormError(
+      '通信エラーが発生しました。もう一度お試しください。'
+    );
+
+  } finally {
+
+    if (
+      document
+        .getElementById(
+          'linkButton'
         )
-      );
+    ) {
+
+      button.disabled = false;
+
+      button.textContent =
+        'KNOT PASSを表示';
+
+    }
+
+  }
+
+}
 
 
-      /*
-       * STEP 6
-       * User ID取得
-       */
+/**
+ * 会員証表示
+ */
+function showMemberCard(member) {
 
-      if (!profile.userId) {
+  const memberNo =
+    escapeHtml(
+      member.memberNo || ''
+    );
 
-        setError(
-          6,
-          'LINE User IDを取得できませんでした。'
-        );
+  const name =
+    escapeHtml(
+      member.name || ''
+    );
 
-        return;
-      }
+  const organization =
+    escapeHtml(
+      member.organization || ''
+    );
+
+  const joinMonth =
+    escapeHtml(
+      formatJoinMonth(
+        member.joinMonth
+      )
+    );
+
+  const visits =
+    Number(
+      member.visits || 0
+    );
 
 
-      setOK(
-        6,
-        'LINE User ID取得 OK',
-        maskUserId(profile.userId)
-      );
+  document
+    .getElementById('app')
+    .innerHTML = `
+
+      <div class="card">
+
+        <div class="card-brand">
+          WINDSOR KNOT
+        </div>
+
+        <div class="card-title">
+          KNOT PASS
+        </div>
 
 
-      /*
-       * 成功
-       */
+        <div class="member-label">
+          MEMBER
+        </div>
 
-      document
-        .getElementById('result')
-        .innerHTML = `
+        <div class="member-name">
+          ${name}
+        </div>
 
-          <div class="success-box">
+        <div class="organization">
+          ${organization}
+        </div>
 
-            <div class="success-title">
-              LIFF CONNECTION OK
+
+        <div class="divider"></div>
+
+
+        <div class="card-grid">
+
+          <div>
+
+            <div class="data-label">
+              MEMBER No.
             </div>
 
-            <div class="success-text">
-
-              LINEとの接続に成功しました。
-
-              <br>
-
-              次にGoogleスプレッドシートの
-              会員名簿と接続します。
-
+            <div class="data-value">
+              ${memberNo}
             </div>
 
           </div>
 
-        `;
 
+          <div>
 
-    } catch (error) {
+            <div class="data-label">
+              MEMBER SINCE
+            </div>
 
-      console.error(error);
-
-
-      document
-        .getElementById('result')
-        .innerHTML = `
-
-          <div class="error-box">
-
-            <strong>
-              LIFF接続エラー
-            </strong>
-
-            <br><br>
-
-            ${escapeHtml(
-              error &&
-              error.message
-                ? error.message
-                : String(error)
-            )}
-
-            <br><br>
-
-            CURRENT URL
-
-            <br>
-
-            ${escapeHtml(
-              window.location.href
-            )}
+            <div class="data-value">
+              ${joinMonth}
+            </div>
 
           </div>
 
-        `;
 
-    }
+          <div>
 
+            <div class="data-label">
+              TOTAL VISITS
+            </div>
+
+            <div class="visits">
+              ${String(visits).padStart(2, '0')}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card-footer">
+          KNOT PASS MEMBER
+        </div>
+
+      </div>
+
+
+      <div class="notice">
+        この画面は会員本人のみご利用いただけます。
+      </div>
+
+    `;
+
+}
+
+
+/**
+ * Loading
+ */
+function showLoading(message) {
+
+  document
+    .getElementById('app')
+    .innerHTML = `
+
+      <div class="panel">
+
+        <div class="loading">
+
+          <div class="spinner"></div>
+
+          <div class="loading-title">
+            ${escapeHtml(message)}
+          </div>
+
+          <div class="loading-text">
+            しばらくお待ちください。
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+}
+
+
+/**
+ * フォームエラー
+ */
+function showFormError(message) {
+
+  const box =
+    document
+      .getElementById(
+        'formError'
+      );
+
+  if (!box) {
+    return;
   }
 
 
-  function setOK(
-    number,
-    title,
-    detail
-  ) {
+  box.textContent =
+    message;
 
-    const titleElement =
-      document.getElementById(
-        'step' + number
-      );
+  box.style.display =
+    'block';
 
-    const detailElement =
-      document.getElementById(
-        'step' +
-        number +
-        'detail'
-      );
+}
 
 
-    titleElement.className =
-      'step-title ok';
+/**
+ * 致命的エラー
+ */
+function showFatalError(message) {
 
-    titleElement.textContent =
-      '✓ STEP ' +
-      number +
-      '：' +
-      title;
+  document
+    .getElementById('app')
+    .innerHTML = `
+
+      <div class="panel">
+
+        <h2 class="auth-title">
+          KNOT PASSを表示できません
+        </h2>
+
+        <p class="auth-description">
+          接続中にエラーが発生しました。
+        </p>
+
+        <div
+          class="error"
+          style="display:block;"
+        >
+          ${escapeHtml(message)}
+        </div>
+
+      </div>
+
+    `;
+
+}
 
 
-    detailElement.textContent =
-      detail || '';
+/**
+ * 入会月表示
+ */
+function formatJoinMonth(value) {
 
+  if (!value) {
+    return '-';
   }
 
 
-  function setError(
-    number,
-    message
-  ) {
-
-    const titleElement =
-      document.getElementById(
-        'step' + number
-      );
-
-    const detailElement =
-      document.getElementById(
-        'step' +
-        number +
-        'detail'
-      );
+  const text =
+    String(value).trim();
 
 
-    titleElement.className =
-      'step-title error';
-
-    titleElement.textContent =
-      '× STEP ' +
-      number +
-      '：エラー';
+  const match =
+    text.match(
+      /(\d{4})年\s*(\d{1,2})月/
+    );
 
 
-    detailElement.textContent =
-      message;
-
-  }
-
-
-  function maskUserId(userId) {
-
-    if (!userId) {
-      return '';
-    }
-
-    if (userId.length < 12) {
-      return '取得成功';
-    }
+  if (match) {
 
     return (
-      userId.substring(0, 6) +
-      '••••••••' +
-      userId.substring(
-        userId.length - 4
-      )
+      match[1] +
+      '.' +
+      String(match[2])
+        .padStart(2, '0')
     );
 
   }
 
 
-  function escapeHtml(value) {
+  return text;
 
-    return String(value || '')
+}
 
-      .replace(/&/g, '&amp;')
 
-      .replace(/</g, '&lt;')
+/**
+ * HTMLエスケープ
+ */
+function escapeHtml(value) {
 
-      .replace(/>/g, '&gt;')
+  return String(
+    value == null ? '' : value
+  )
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 
-      .replace(/"/g, '&quot;')
-
-      .replace(/'/g, '&#039;');
-
-  }
+}
 
 </script>
 
 </body>
-
 </html>
