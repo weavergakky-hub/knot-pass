@@ -1385,7 +1385,7 @@
 
 
     /* =====================================================
-       MEMBER MENU
+       KNOT VISIT
     ===================================================== */
 
     .member-menu-area {
@@ -1923,7 +1923,7 @@
 
 
 <!-- =====================================================
-     CONFIRM MODAL
+     KNOT VISIT CONFIRM MODAL
 ===================================================== -->
 
 <div
@@ -1937,25 +1937,25 @@
 
     <div class="eyebrow">
 
-      MEMBER MENU
+      KNOT VISIT
 
     </div>
 
 
     <div class="modal-title">
 
-      会員メニューを
+      Welcome to
       <br>
-      利用しますか？
+      WindsorKnot.
 
     </div>
 
 
     <div class="modal-text">
 
-      「利用する」を押すと、
-      本日の会員メニュー利用として
-      記録されます。
+      本日のご来店を記録します。
+      <br>
+      よろしければ「VISIT」を押してください。
 
     </div>
 
@@ -1999,7 +1999,7 @@
         onclick="registerMenuUse()"
       >
 
-        利用する
+        VISIT
 
       </button>
 
@@ -2037,8 +2037,6 @@ const LIFF_ID =
 
 /**
  * GAS Web App URL
- *
- * 現在利用しているURLを維持
  */
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzxcn3Esc_HHA_N13EDRoSeX4ItMobH6eaQ_874g1AV_I0CU6LUaczHbnP_6mDzf6mNCw/exec';
@@ -2080,9 +2078,6 @@ async function initialize() {
   try {
 
 
-    /**
-     * LIFF初期化
-     */
     await liff.init({
 
       liffId:
@@ -2091,9 +2086,6 @@ async function initialize() {
     });
 
 
-    /**
-     * LINEログイン
-     */
     if (
       !liff.isLoggedIn()
     ) {
@@ -2107,9 +2099,6 @@ async function initialize() {
     }
 
 
-    /**
-     * LINEプロフィール取得
-     */
     const profile =
       await liff.getProfile();
 
@@ -2130,9 +2119,6 @@ async function initialize() {
     }
 
 
-    /**
-     * 会員検索
-     */
     await checkMember();
 
 
@@ -2211,9 +2197,6 @@ async function checkMember() {
       await response.json();
 
 
-    /**
-     * 会員発見
-     */
     if (
       data.success &&
       (
@@ -2240,9 +2223,6 @@ async function checkMember() {
     }
 
 
-    /**
-     * LINE未連携
-     */
     if (
       data.status ===
       'MEMBER_NOT_LINKED'
@@ -2910,7 +2890,7 @@ function showMemberCard(
 
 
         <!-- =========================================
-             MEMBER MENU BUTTON
+             KNOT VISIT
         ========================================== -->
 
 
@@ -2919,24 +2899,23 @@ function showMemberCard(
 
           <div class="menu-eyebrow">
 
-            MEMBER BENEFIT
+            WINDSOR KNOT
 
           </div>
 
 
           <div class="menu-title">
 
-            会員メニュー
+            KNOT VISIT
 
           </div>
 
 
           <div class="menu-description">
 
-            会員メニューをご利用の際に
+            今日のWindsorKnotでの時間を記録します。
             <br>
-            スタッフの案内に従って
-            ボタンを押してください。
+            ご来店時にボタンを押してください。
 
           </div>
 
@@ -2947,7 +2926,7 @@ function showMemberCard(
             onclick="openUseConfirm()"
           >
 
-            会員メニューを利用する
+            KNOT VISIT
 
           </button>
 
@@ -3077,16 +3056,13 @@ function closeUseConfirm() {
 
 
 /* =====================================================
-   REGISTER MENU USE
+   REGISTER KNOT VISIT
 ===================================================== */
 
 
 async function registerMenuUse() {
 
 
-  /**
-   * 二重タップ防止
-   */
   if (
     isRegistering
   ) {
@@ -3122,7 +3098,7 @@ async function registerMenuUse() {
 
 
   button.textContent =
-    '登録中...';
+    'RECORDING...';
 
 
   errorBox.style.display =
@@ -3132,13 +3108,9 @@ async function registerMenuUse() {
   try {
 
 
-    /**
-     * GASへ送信
-     *
-     * 会員No.や氏名は送らず、
-     * LINE User IDだけを送信。
-     *
-     * GAS側で本人を再照合する。
+    /*
+     * GAS側の処理名は変更しない
+     * 既存の精算管理台帳への登録機能を維持する
      */
     const response =
 
@@ -3181,7 +3153,7 @@ async function registerMenuUse() {
 
 
       throw new Error(
-        '利用登録に失敗しました。'
+        '来店記録に失敗しました。'
       );
 
     }
@@ -3202,16 +3174,13 @@ async function registerMenuUse() {
 
         data.message ||
 
-        '利用登録に失敗しました。'
+        '来店記録に失敗しました。'
 
       );
 
     }
 
 
-    /**
-     * 最新会員情報
-     */
     if (
       data.member
     ) {
@@ -3223,9 +3192,6 @@ async function registerMenuUse() {
     }
 
 
-    /**
-     * モーダルを閉じる
-     */
     document
       .getElementById(
         'confirmModal'
@@ -3236,9 +3202,6 @@ async function registerMenuUse() {
       );
 
 
-    /**
-     * 完了画面
-     */
     showUseSuccess(
       data.member
     );
@@ -3248,7 +3211,7 @@ async function registerMenuUse() {
 
 
     console.error(
-      'MENU USE ERROR',
+      'KNOT VISIT ERROR',
       error
     );
 
@@ -3273,7 +3236,7 @@ async function registerMenuUse() {
 
 
     button.textContent =
-      '利用する';
+      'VISIT';
 
   }
 
@@ -3282,7 +3245,7 @@ async function registerMenuUse() {
 
 
 /* =====================================================
-   SUCCESS SCREEN
+   WELCOME BACK SCREEN
 ===================================================== */
 
 
@@ -3331,14 +3294,14 @@ function showUseSuccess(
 
         <div class="eyebrow">
 
-          MEMBER MENU
+          KNOT VISIT
 
         </div>
 
 
         <div class="success-title">
 
-          利用を記録しました
+          WELCOME BACK.
 
         </div>
 
@@ -3357,12 +3320,12 @@ function showUseSuccess(
 
         <div class="success-text">
 
-          会員メニューの利用登録が
-          完了しました。
+          本日のご来店を記録しました。
 
           <br>
 
-          ご利用ありがとうございます。
+          WindsorKnotでの時間を
+          お楽しみください。
 
         </div>
 
@@ -3380,7 +3343,7 @@ function showUseSuccess(
             onclick="reloadMemberCard()"
           >
 
-            会員証に戻る
+            KNOT PASSに戻る
 
           </button>
 
@@ -3393,7 +3356,7 @@ function showUseSuccess(
 
       <div class="venue-line">
 
-        WINDSOR KNOT
+        BAR ・ RESTAURANT ・ PARTY
 
       </div>
 
@@ -3411,20 +3374,10 @@ function showUseSuccess(
 async function reloadMemberCard() {
 
 
-  /**
-   * 状態を解除
-   */
   isRegistering =
     false;
 
 
-  /**
-   * GASから最新情報を再取得
-   *
-   * 会員名簿H列が
-   * 精算管理台帳をCOUNTしている場合、
-   * TOTAL VISITSもここで更新される。
-   */
   await checkMember();
 
 }
@@ -3685,11 +3638,6 @@ function formatJoinMonth(
     ).trim();
 
 
-  /**
-   * 2026年9月
-   * →
-   * 2026.09
-   */
   const japaneseMatch =
 
     text.match(
@@ -3720,9 +3668,6 @@ function formatJoinMonth(
   }
 
 
-  /**
-   * ISO形式
-   */
   const isoMatch =
 
     text.match(
