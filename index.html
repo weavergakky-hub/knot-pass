@@ -2,90 +2,387 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <title>KNOT PASS</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
+  <meta name="theme-color" content="#111a2d">
+
+  <title>WindsorKnot | KNOT PASS</title>
+
+  <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
+  <!--
+    WindsorKnot KNOT PASS
+    ------------------------------------
+    LIFF / GAS の通信ロジックは既存仕様を維持。
+    UIのみ WindsorKnot ブランドに合わせて再設計。
+  -->
+
   <style>
+
+    /* =========================================================
+       01. DESIGN TOKENS
+    ========================================================= */
+
+    :root {
+      --navy: #111a2d;
+      --navy-deep: #0b1220;
+      --navy-soft: #172238;
+
+      --gold: #c6a15b;
+      --gold-light: #ddc58f;
+      --gold-dark: #8f713b;
+
+      --ivory: #f4f0e7;
+      --ivory-soft: #ebe5d8;
+
+      --white: #ffffff;
+      --black: #111111;
+
+      --muted: rgba(244, 240, 231, 0.56);
+      --line: rgba(198, 161, 91, 0.28);
+
+      --serif:
+        "Times New Roman",
+        "Yu Mincho",
+        "YuMincho",
+        "Hiragino Mincho ProN",
+        "Hiragino Mincho Pro",
+        serif;
+
+      --sans:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Helvetica Neue",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Arial,
+        sans-serif;
+    }
+
+
+    /* =========================================================
+       02. RESET
+    ========================================================= */
+
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--navy);
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: #f3f1ec;
-      color: #171717;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Helvetica Neue",
-        Arial,
-        sans-serif;
+      min-height: 100dvh;
+
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(198, 161, 91, 0.09),
+          transparent 34%
+        ),
+        linear-gradient(
+          180deg,
+          #141e33 0%,
+          #111a2d 46%,
+          #0c1424 100%
+        );
+
+      color: var(--ivory);
+      font-family: var(--sans);
+
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+
+    /* =========================================================
+       03. BACKGROUND DECORATION
+    ========================================================= */
+
+    body::before {
+      content: "";
+      position: fixed;
+      z-index: 0;
+
+      width: 460px;
+      height: 460px;
+
+      top: -270px;
+      right: -270px;
+
+      border: 1px solid rgba(198, 161, 91, 0.10);
+      border-radius: 50%;
+
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      z-index: 0;
+
+      width: 330px;
+      height: 330px;
+
+      bottom: -230px;
+      left: -220px;
+
+      border: 1px solid rgba(198, 161, 91, 0.07);
+      border-radius: 50%;
+
+      pointer-events: none;
+    }
+
+
+    /* =========================================================
+       04. PAGE
+    ========================================================= */
+
+    .page {
+      position: relative;
+      z-index: 1;
+
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
     }
 
     .container {
       width: 100%;
       max-width: 480px;
+
       margin: 0 auto;
+
       padding:
-        calc(36px + env(safe-area-inset-top))
-        22px
-        70px;
+        calc(26px + env(safe-area-inset-top))
+        20px
+        calc(55px + env(safe-area-inset-bottom));
     }
+
+
+    /* =========================================================
+       05. BRAND HEADER
+    ========================================================= */
 
     .brand {
       text-align: center;
-      margin-bottom: 32px;
+
+      padding-top: 15px;
+      margin-bottom: 30px;
     }
 
-    .brand-small {
-      font-size: 11px;
-      letter-spacing: 4px;
-      margin-bottom: 9px;
+    .brand-logo {
+      color: var(--ivory);
+
+      font-family: var(--serif);
+      font-size: clamp(38px, 10vw, 49px);
+
+      font-weight: 400;
+      font-style: italic;
+
+      letter-spacing: -2.5px;
+      line-height: 1;
+
+      text-shadow:
+        0 0 30px rgba(198, 161, 91, 0.07);
     }
 
-    .brand-title {
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: 4px;
+    .brand-sub {
+      margin-top: 13px;
+
+      color: var(--gold-light);
+
+      font-family: var(--serif);
+      font-size: 10px;
+
+      letter-spacing: 5px;
+
+      opacity: 0.88;
     }
+
+    .brand-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 180px;
+
+      margin: 21px auto 0;
+    }
+
+    .brand-line::before,
+    .brand-line::after {
+      content: "";
+
+      display: block;
+      flex: 1;
+
+      height: 1px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(198, 161, 91, 0.72)
+        );
+    }
+
+    .brand-line::after {
+      background:
+        linear-gradient(
+          90deg,
+          rgba(198, 161, 91, 0.72),
+          transparent
+        );
+    }
+
+    .brand-diamond {
+      width: 5px;
+      height: 5px;
+
+      margin: 0 11px;
+
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+    }
+
+
+    /* =========================================================
+       06. COMMON PANEL
+    ========================================================= */
 
     .panel {
-      background: #fff;
-      border-radius: 24px;
-      padding: 30px 25px;
-      box-shadow: 0 10px 35px rgba(0,0,0,.05);
+      position: relative;
+
+      overflow: hidden;
+
+      border: 1px solid rgba(198, 161, 91, 0.22);
+      border-radius: 4px;
+
+      padding: 34px 27px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(23, 34, 56, 0.96),
+          rgba(10, 18, 32, 0.98)
+        );
+
+      box-shadow:
+        0 28px 65px rgba(0, 0, 0, 0.24);
     }
+
+    .panel::before {
+      content: "";
+
+      position: absolute;
+
+      width: 150px;
+      height: 150px;
+
+      top: -100px;
+      right: -100px;
+
+      border: 1px solid rgba(198, 161, 91, 0.14);
+      border-radius: 50%;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+
+      font-family: var(--serif);
+      font-size: 10px;
+
+      letter-spacing: 3.5px;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       07. LOADING
+    ========================================================= */
 
     .loading {
+      padding: 32px 5px 27px;
       text-align: center;
-      padding: 45px 10px;
     }
 
-    .loading-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 14px;
+    .loading-mark {
+      position: relative;
+
+      width: 54px;
+      height: 54px;
+
+      margin: 0 auto 30px;
     }
 
-    .loading-text {
-      color: #888;
-      font-size: 13px;
-      line-height: 1.8;
+    .loading-mark::before {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      border: 1px solid rgba(198, 161, 91, 0.18);
+      border-radius: 50%;
     }
 
     .spinner {
-      width: 30px;
-      height: 30px;
-      margin: 0 auto 25px;
-      border: 3px solid #ddd;
-      border-top-color: #171717;
+      position: absolute;
+
+      top: 6px;
+      left: 6px;
+
+      width: 42px;
+      height: 42px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.15);
+
+      border-top-color:
+        var(--gold);
+
       border-radius: 50%;
-      animation: spin .8s linear infinite;
+
+      animation:
+        spin 1.2s linear infinite;
+    }
+
+    .loading-mark-center {
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      width: 5px;
+      height: 5px;
+
+      margin:
+        -2.5px 0 0 -2.5px;
+
+      background:
+        var(--gold);
+
+      transform:
+        rotate(45deg);
     }
 
     @keyframes spin {
@@ -94,227 +391,813 @@
       }
     }
 
+    .loading-title {
+      margin-bottom: 12px;
+
+      color: var(--ivory);
+
+      font-family: var(--serif);
+      font-size: 19px;
+
+      font-weight: 400;
+
+      letter-spacing: 1px;
+    }
+
+    .loading-text {
+      color:
+        rgba(244, 240, 231, 0.48);
+
+      font-size: 12px;
+
+      line-height: 1.9;
+    }
+
+
+    /* =========================================================
+       08. LINK / AUTH FORM
+    ========================================================= */
+
+    .auth-head {
+      margin-bottom: 31px;
+    }
+
     .auth-title {
-      margin: 0 0 8px;
-      font-size: 22px;
+      margin:
+        8px 0 10px;
+
+      color: var(--ivory);
+
+      font-family: var(--serif);
+      font-size: 27px;
+
+      font-weight: 400;
+
+      letter-spacing: 1px;
     }
 
     .auth-description {
-      margin: 0 0 30px;
-      color: #777;
-      font-size: 13px;
-      line-height: 1.8;
+      margin: 0;
+
+      color:
+        rgba(244, 240, 231, 0.52);
+
+      font-size: 12px;
+
+      line-height: 1.9;
     }
 
     .field {
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .label {
       display: block;
-      margin-bottom: 8px;
-      font-size: 12px;
-      font-weight: 600;
+
+      margin-bottom: 9px;
+
+      color:
+        rgba(221, 197, 143, 0.82);
+
+      font-size: 9px;
+
+      font-weight: 500;
+
+      letter-spacing: 2.4px;
     }
 
     input {
       width: 100%;
-      height: 52px;
-      border: 1px solid #d9d9d9;
-      border-radius: 10px;
-      padding: 0 15px;
-      background: #fff;
-      color: #171717;
+      height: 55px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.25);
+
+      border-radius: 2px;
+
+      padding: 0 16px;
+
+      background:
+        rgba(255, 255, 255, 0.035);
+
+      color: var(--ivory);
+
       font-size: 16px;
+
       outline: none;
+
+      transition:
+        border-color 0.2s,
+        background 0.2s;
+    }
+
+    input::placeholder {
+      color:
+        rgba(244, 240, 231, 0.24);
     }
 
     input:focus {
-      border-color: #171717;
+      border-color:
+        rgba(198, 161, 91, 0.78);
+
+      background:
+        rgba(255, 255, 255, 0.055);
     }
 
     button {
+      position: relative;
+
       width: 100%;
-      height: 54px;
+      height: 57px;
+
       margin-top: 8px;
-      border: 0;
-      border-radius: 10px;
-      background: #171717;
-      color: #fff;
-      font-size: 15px;
+
+      border:
+        1px solid
+        var(--gold);
+
+      border-radius: 2px;
+
+      background:
+        var(--gold);
+
+      color:
+        var(--navy-deep);
+
+      font-family:
+        var(--serif);
+
+      font-size: 13px;
+
       font-weight: 600;
+
+      letter-spacing: 2.5px;
+
       cursor: pointer;
+
+      transition:
+        opacity 0.2s,
+        transform 0.15s;
+    }
+
+    button:active {
+      transform:
+        scale(0.99);
     }
 
     button:disabled {
-      opacity: .5;
+      opacity: 0.48;
     }
 
     .error {
       display: none;
+
       margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #fff2f0;
-      color: #9c3026;
+
+      padding: 15px 16px;
+
+      border:
+        1px solid
+        rgba(193, 112, 91, 0.32);
+
+      border-radius: 2px;
+
+      background:
+        rgba(121, 47, 35, 0.13);
+
+      color: #e0aaa0;
+
       font-size: 12px;
-      line-height: 1.7;
+
+      line-height: 1.8;
     }
+
+
+    /* =========================================================
+       09. MEMBER CARD WRAPPER
+    ========================================================= */
+
+    .member-section {
+      width: 100%;
+    }
+
+    .member-intro {
+      margin-bottom: 16px;
+
+      text-align: center;
+    }
+
+    .member-intro-label {
+      color:
+        rgba(221, 197, 143, 0.65);
+
+      font-size: 8px;
+
+      letter-spacing: 4px;
+    }
+
+
+    /* =========================================================
+       10. MEMBER CARD
+    ========================================================= */
 
     .card {
       position: relative;
+
       overflow: hidden;
-      min-height: 530px;
-      border-radius: 26px;
-      padding: 32px 27px;
-      background: #171717;
-      color: #fff;
-      box-shadow: 0 18px 45px rgba(0,0,0,.16);
+
+      width: 100%;
+      min-height: 570px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.52);
+
+      border-radius: 5px;
+
+      padding: 32px 28px 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #162138 0%,
+          #111a2d 48%,
+          #0b1322 100%
+        );
+
+      color:
+        var(--ivory);
+
+      box-shadow:
+        0 35px 75px
+        rgba(0, 0, 0, 0.30);
     }
 
-    .card:after {
+
+    /* subtle inner border */
+
+    .card::before {
       content: "";
+
       position: absolute;
-      width: 280px;
-      height: 280px;
-      right: -145px;
-      bottom: -115px;
-      border: 1px solid rgba(255,255,255,.12);
+
+      inset: 7px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.11);
+
+      border-radius: 2px;
+
+      pointer-events: none;
+    }
+
+
+    /* giant decorative K */
+
+    .card-monogram {
+      position: absolute;
+
+      z-index: 0;
+
+      right: -20px;
+      bottom: -45px;
+
+      color:
+        rgba(198, 161, 91, 0.035);
+
+      font-family:
+        var(--serif);
+
+      font-size: 280px;
+      font-style: italic;
+
+      line-height: 1;
+
+      pointer-events: none;
+      user-select: none;
+    }
+
+
+    /* corner circle */
+
+    .card-circle {
+      position: absolute;
+
+      z-index: 0;
+
+      width: 290px;
+      height: 290px;
+
+      right: -195px;
+      bottom: -120px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.16);
+
       border-radius: 50%;
     }
 
-    .card-brand {
-      font-size: 10px;
-      letter-spacing: 3px;
-      opacity: .65;
+
+    /* =========================================================
+       11. CARD TOP
+    ========================================================= */
+
+    .card-top {
+      position: relative;
+      z-index: 2;
     }
 
-    .card-title {
-      margin-top: 7px;
-      font-size: 23px;
-      font-weight: 700;
-      letter-spacing: 3px;
+    .card-logo {
+      color:
+        var(--ivory);
+
+      font-family:
+        var(--serif);
+
+      font-size: 28px;
+
+      font-style: italic;
+
+      letter-spacing: -1.5px;
+    }
+
+    .card-pass {
+      margin-top: 8px;
+
+      color:
+        var(--gold-light);
+
+      font-size: 8px;
+
+      letter-spacing: 4px;
+    }
+
+    .card-ornament {
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+
+      margin-top: 23px;
+    }
+
+    .card-ornament-line {
+      flex: 1;
+
+      height: 1px;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(198, 161, 91, 0.48),
+          rgba(198, 161, 91, 0.06)
+        );
+    }
+
+    .card-ornament-diamond {
+      width: 5px;
+      height: 5px;
+
+      margin-left: 8px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.72);
+
+      transform:
+        rotate(45deg);
+    }
+
+
+    /* =========================================================
+       12. MEMBER IDENTITY
+    ========================================================= */
+
+    .identity {
+      position: relative;
+      z-index: 2;
+
+      margin-top: 70px;
     }
 
     .member-label {
-      margin-top: 75px;
-      font-size: 10px;
-      letter-spacing: 2px;
-      opacity: .5;
+      color:
+        rgba(221, 197, 143, 0.57);
+
+      font-size: 8px;
+
+      letter-spacing: 4px;
     }
 
     .member-name {
-      margin-top: 8px;
-      font-size: 29px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      margin-top: 10px;
+
+      color:
+        var(--ivory);
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        clamp(27px, 8vw, 34px);
+
+      font-weight: 400;
+
+      letter-spacing: 2px;
+
+      line-height: 1.35;
     }
 
     .organization {
-      min-height: 44px;
-      margin-top: 12px;
-      font-size: 13px;
-      line-height: 1.7;
-      opacity: .65;
+      min-height: 42px;
+
+      margin-top: 13px;
+
+      color:
+        rgba(244, 240, 231, 0.55);
+
+      font-size: 11px;
+
+      line-height: 1.75;
+
+      letter-spacing: 0.3px;
     }
+
+
+    /* =========================================================
+       13. DIVIDER
+    ========================================================= */
 
     .divider {
+      position: relative;
+      z-index: 2;
+
       height: 1px;
-      margin: 32px 0;
-      background: rgba(255,255,255,.16);
+
+      margin: 33px 0 27px;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(198, 161, 91, 0.50),
+          rgba(198, 161, 91, 0.08)
+        );
     }
 
+
+    /* =========================================================
+       14. MEMBER DATA
+    ========================================================= */
+
     .card-grid {
+      position: relative;
+      z-index: 2;
+
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        28px 18px;
+    }
+
+    .data-block {
+      min-width: 0;
     }
 
     .data-label {
-      margin-bottom: 8px;
-      font-size: 9px;
-      letter-spacing: 2px;
-      opacity: .45;
+      margin-bottom: 9px;
+
+      color:
+        rgba(221, 197, 143, 0.48);
+
+      font-size: 7.5px;
+
+      letter-spacing: 2.5px;
     }
 
     .data-value {
+      color:
+        var(--ivory);
+
+      font-family:
+        var(--serif);
+
       font-size: 18px;
+
       letter-spacing: 1px;
     }
 
-    .visits {
-      font-size: 36px;
-      font-weight: 600;
+    .visits-block {
+      grid-column: 1 / -1;
+
+      margin-top: 1px;
     }
+
+    .visits {
+      color:
+        var(--ivory);
+
+      font-family:
+        var(--serif);
+
+      font-size: 48px;
+
+      font-weight: 400;
+
+      line-height: 1;
+
+      letter-spacing: 2px;
+    }
+
+
+    /* =========================================================
+       15. CARD FOOTER
+    ========================================================= */
 
     .card-footer {
       position: absolute;
-      left: 27px;
-      bottom: 28px;
+
+      z-index: 2;
+
+      left: 28px;
+      right: 28px;
+      bottom: 27px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-footer-text {
+      color:
+        rgba(221, 197, 143, 0.40);
+
+      font-size: 7px;
+
+      letter-spacing: 3px;
+    }
+
+    .card-footer-mark {
+      width: 18px;
+      height: 18px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.35);
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-footer-mark::after {
+      content: "";
+
+      width: 4px;
+      height: 4px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.7);
+
+      transform:
+        rotate(45deg);
+    }
+
+
+    /* =========================================================
+       16. BELOW CARD
+    ========================================================= */
+
+    .venue-line {
+      margin-top: 25px;
+
+      text-align: center;
+
+      color:
+        rgba(221, 197, 143, 0.55);
+
+      font-family:
+        var(--serif);
+
       font-size: 9px;
-      letter-spacing: 2px;
-      opacity: .35;
+
+      letter-spacing: 5px;
     }
 
     .notice {
-      margin-top: 22px;
+      margin-top: 16px;
+
       text-align: center;
-      color: #888;
-      font-size: 11px;
-      line-height: 1.7;
+
+      color:
+        rgba(244, 240, 231, 0.32);
+
+      font-size: 9px;
+
+      line-height: 1.8;
+
+      letter-spacing: 0.5px;
     }
+
+
+    /* =========================================================
+       17. FATAL ERROR
+    ========================================================= */
+
+    .fatal-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 46px;
+      height: 46px;
+
+      margin-bottom: 25px;
+
+      border:
+        1px solid
+        rgba(198, 161, 91, 0.45);
+
+      border-radius: 50%;
+
+      color:
+        var(--gold);
+
+      font-family:
+        var(--serif);
+
+      font-size: 20px;
+    }
+
+
+    /* =========================================================
+       18. SMALL DEVICES
+    ========================================================= */
+
+    @media (max-width: 370px) {
+
+      .container {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .card {
+        min-height: 540px;
+
+        padding-left: 23px;
+        padding-right: 23px;
+      }
+
+      .identity {
+        margin-top: 60px;
+      }
+
+      .member-name {
+        font-size: 26px;
+      }
+
+      .card-footer {
+        left: 23px;
+        right: 23px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
 
-<div class="container">
+<div class="page">
 
-  <div class="brand">
-    <div class="brand-small">WINDSOR KNOT</div>
-    <div class="brand-title">KNOT PASS</div>
-  </div>
+  <div class="container">
 
-  <div id="app">
-    <div class="panel">
-      <div class="loading">
-        <div class="spinner"></div>
-        <div class="loading-title">
-          KNOT PASSを確認しています
-        </div>
-        <div class="loading-text">
-          LINEアカウントと会員情報を確認しています。
-        </div>
+
+    <!-- =======================================================
+         BRAND HEADER
+    ======================================================== -->
+
+    <header class="brand">
+
+      <div class="brand-logo">
+        WindsorKnot
       </div>
-    </div>
+
+      <div class="brand-sub">
+        KNOT PASS
+      </div>
+
+      <div class="brand-line">
+
+        <div class="brand-diamond"></div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =======================================================
+         APPLICATION
+    ======================================================== -->
+
+    <main id="app">
+
+      <div class="panel">
+
+        <div class="loading">
+
+          <div class="loading-mark">
+
+            <div class="spinner"></div>
+
+            <div
+              class="loading-mark-center"
+            ></div>
+
+          </div>
+
+          <div class="loading-title">
+            Membership Verification
+          </div>
+
+          <div class="loading-text">
+            LINEアカウントと会員情報を確認しています。
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+
   </div>
 
 </div>
 
 
+
 <script>
 
+/* =========================================================
+   CONFIG
+========================================================= */
+
+
+/*
+  発行済みLIFF ID
+*/
 const LIFF_ID =
   '2011750249-fEwnWrPD';
 
+
+/*
+  現在利用しているGAS Web App
+  ※既存のURLをそのまま維持
+*/
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzxcn3Esc_HHA_N13EDRoSeX4ItMobH6eaQ_874g1AV_I0CU6LUaczHbnP_6mDzf6mNCw/exec';
+
 
 let currentLineUserId = '';
 
 
-window.addEventListener('load', initialize);
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+window.addEventListener(
+  'load',
+  initialize
+);
 
 
 async function initialize() {
 
   try {
 
+    /*
+      LIFF初期化
+    */
     await liff.init({
       liffId: LIFF_ID
     });
 
 
+    /*
+      未ログインの場合はLINEログイン
+    */
     if (!liff.isLoggedIn()) {
 
       liff.login();
@@ -323,6 +1206,9 @@ async function initialize() {
     }
 
 
+    /*
+      LINEプロフィール取得
+    */
     const profile =
       await liff.getProfile();
 
@@ -340,10 +1226,18 @@ async function initialize() {
     }
 
 
+    /*
+      会員検索
+    */
     await checkMember();
 
 
   } catch (error) {
+
+    console.error(
+      'LIFF INITIALIZE ERROR',
+      error
+    );
 
     showFatalError(
       error.message ||
@@ -355,6 +1249,11 @@ async function initialize() {
 }
 
 
+
+/* =========================================================
+   MEMBER SEARCH
+========================================================= */
+
 /**
  * LINE User IDで
  * 既存会員連携を検索
@@ -364,7 +1263,7 @@ async function checkMember() {
   try {
 
     showLoading(
-      '会員情報を確認しています'
+      'Membership Verification'
     );
 
 
@@ -394,11 +1293,17 @@ async function checkMember() {
       await response.json();
 
 
+    /*
+      既にLINE連携済み
+    */
     if (
       data.success &&
       (
-        data.status === 'MEMBER_FOUND' ||
-        data.status === 'ALREADY_LINKED'
+        data.status ===
+          'MEMBER_FOUND' ||
+
+        data.status ===
+          'ALREADY_LINKED'
       )
     ) {
 
@@ -410,6 +1315,9 @@ async function checkMember() {
     }
 
 
+    /*
+      会員だがLINE未連携
+    */
     if (
       data.status ===
       'MEMBER_NOT_LINKED'
@@ -429,6 +1337,11 @@ async function checkMember() {
 
   } catch (error) {
 
+    console.error(
+      'MEMBER SEARCH ERROR',
+      error
+    );
+
     showFatalError(
       error.message ||
       String(error)
@@ -438,6 +1351,11 @@ async function checkMember() {
 
 }
 
+
+
+/* =========================================================
+   FIRST LINK FORM
+========================================================= */
 
 /**
  * 初回連携フォーム
@@ -450,21 +1368,34 @@ function showLinkForm() {
 
       <div class="panel">
 
-        <h2 class="auth-title">
-          会員情報を連携
-        </h2>
 
-        <p class="auth-description">
-          初回のみ会員情報の確認が必要です。
-          <br>
-          会員番号と登録済みの電話番号を入力してください。
-        </p>
+        <div class="auth-head">
+
+          <div class="eyebrow">
+            MEMBER AUTHENTICATION
+          </div>
+
+          <h2 class="auth-title">
+            KNOT PASS
+          </h2>
+
+          <p class="auth-description">
+            初回のみ会員情報の確認が必要です。
+            <br>
+            ご登録済みの会員番号と電話番号を
+            入力してください。
+          </p>
+
+        </div>
 
 
         <div class="field">
 
-          <label class="label">
-            会員番号
+          <label
+            class="label"
+            for="memberNo"
+          >
+            MEMBER No.
           </label>
 
           <input
@@ -472,7 +1403,7 @@ function showLinkForm() {
             type="text"
             inputmode="numeric"
             autocomplete="off"
-            placeholder="例：1"
+            placeholder="会員番号"
           >
 
         </div>
@@ -480,8 +1411,11 @@ function showLinkForm() {
 
         <div class="field">
 
-          <label class="label">
-            電話番号
+          <label
+            class="label"
+            for="phone"
+          >
+            PHONE NUMBER
           </label>
 
           <input
@@ -489,7 +1423,7 @@ function showLinkForm() {
             type="tel"
             inputmode="tel"
             autocomplete="tel"
-            placeholder="例：08012345678"
+            placeholder="08012345678"
           >
 
         </div>
@@ -497,9 +1431,10 @@ function showLinkForm() {
 
         <button
           id="linkButton"
+          type="button"
           onclick="linkMember()"
         >
-          KNOT PASSを表示
+          VIEW KNOT PASS
         </button>
 
 
@@ -508,16 +1443,28 @@ function showLinkForm() {
           class="error"
         ></div>
 
+
       </div>
+
+
+      <div class="venue-line">
+        BAR ・ RESTAURANT ・ PARTY
+      </div>
+
 
       <div class="notice">
-        入力情報は会員本人確認のために使用します。
+        入力情報は会員本人確認のためにのみ使用します。
       </div>
 
-    `;
+  `;
 
 }
 
+
+
+/* =========================================================
+   LINK MEMBER
+========================================================= */
 
 /**
  * 初回LINE連携
@@ -530,24 +1477,35 @@ async function linkMember() {
       .value
       .trim();
 
+
   const phone =
     document
       .getElementById('phone')
       .value
       .trim();
 
+
   const button =
     document
-      .getElementById('linkButton');
+      .getElementById(
+        'linkButton'
+      );
+
 
   const errorBox =
     document
-      .getElementById('formError');
+      .getElementById(
+        'formError'
+      );
 
 
   errorBox.style.display =
     'none';
 
+
+  /*
+    validation
+  */
 
   if (!memberNo) {
 
@@ -569,10 +1527,12 @@ async function linkMember() {
   }
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.textContent =
-    '確認しています...';
+    'VERIFYING...';
 
 
   try {
@@ -581,20 +1541,34 @@ async function linkMember() {
       await fetch(
         API_URL,
         {
-          method: 'POST',
+
+          method:
+            'POST',
 
           headers: {
+
             'Content-Type':
               'text/plain;charset=utf-8'
+
           },
 
-          body: JSON.stringify({
-            action: 'linkMember',
-            memberNo: memberNo,
-            phone: phone,
-            lineUserId:
-              currentLineUserId
-          })
+          body:
+            JSON.stringify({
+
+              action:
+                'linkMember',
+
+              memberNo:
+                memberNo,
+
+              phone:
+                phone,
+
+              lineUserId:
+                currentLineUserId
+
+            })
+
         }
       );
 
@@ -603,11 +1577,17 @@ async function linkMember() {
       await response.json();
 
 
+    /*
+      LINE連携成功
+    */
     if (
       data.success &&
       (
-        data.status === 'LINK_SUCCESS' ||
-        data.status === 'ALREADY_LINKED'
+        data.status ===
+          'LINK_SUCCESS' ||
+
+        data.status ===
+          'ALREADY_LINKED'
       )
     ) {
 
@@ -619,6 +1599,9 @@ async function linkMember() {
     }
 
 
+    /*
+      認証失敗
+    */
     showFormError(
       data.message ||
       '会員情報を確認できませんでした。'
@@ -627,23 +1610,34 @@ async function linkMember() {
 
   } catch (error) {
 
+    console.error(
+      'LINK MEMBER ERROR',
+      error
+    );
+
+
     showFormError(
       '通信エラーが発生しました。もう一度お試しください。'
     );
 
+
   } finally {
 
-    if (
+    const currentButton =
       document
         .getElementById(
           'linkButton'
-        )
-    ) {
+        );
 
-      button.disabled = false;
 
-      button.textContent =
-        'KNOT PASSを表示';
+    if (currentButton) {
+
+      currentButton.disabled =
+        false;
+
+
+      currentButton.textContent =
+        'VIEW KNOT PASS';
 
     }
 
@@ -652,25 +1646,34 @@ async function linkMember() {
 }
 
 
+
+/* =========================================================
+   MEMBER CARD
+========================================================= */
+
 /**
  * 会員証表示
  */
 function showMemberCard(member) {
+
 
   const memberNo =
     escapeHtml(
       member.memberNo || ''
     );
 
+
   const name =
     escapeHtml(
       member.name || ''
     );
 
+
   const organization =
     escapeHtml(
       member.organization || ''
     );
+
 
   const joinMonth =
     escapeHtml(
@@ -679,9 +1682,19 @@ function showMemberCard(member) {
       )
     );
 
+
   const visits =
     Number(
       member.visits || 0
+    );
+
+
+  const formattedVisits =
+    String(
+      visits
+    ).padStart(
+      2,
+      '0'
     );
 
 
@@ -689,91 +1702,183 @@ function showMemberCard(member) {
     .getElementById('app')
     .innerHTML = `
 
-      <div class="card">
 
-        <div class="card-brand">
-          WINDSOR KNOT
-        </div>
-
-        <div class="card-title">
-          KNOT PASS
-        </div>
+      <section class="member-section">
 
 
-        <div class="member-label">
-          MEMBER
-        </div>
+        <div class="member-intro">
 
-        <div class="member-name">
-          ${name}
-        </div>
-
-        <div class="organization">
-          ${organization}
-        </div>
-
-
-        <div class="divider"></div>
-
-
-        <div class="card-grid">
-
-          <div>
-
-            <div class="data-label">
-              MEMBER No.
-            </div>
-
-            <div class="data-value">
-              ${memberNo}
-            </div>
-
-          </div>
-
-
-          <div>
-
-            <div class="data-label">
-              MEMBER SINCE
-            </div>
-
-            <div class="data-value">
-              ${joinMonth}
-            </div>
-
-          </div>
-
-
-          <div>
-
-            <div class="data-label">
-              TOTAL VISITS
-            </div>
-
-            <div class="visits">
-              ${String(visits).padStart(2, '0')}
-            </div>
-
+          <div class="member-intro-label">
+            MEMBERSHIP
           </div>
 
         </div>
 
 
-        <div class="card-footer">
-          KNOT PASS MEMBER
+        <div class="card">
+
+
+          <!-- decorative elements -->
+
+          <div
+            class="card-monogram"
+            aria-hidden="true"
+          >
+            K
+          </div>
+
+          <div
+            class="card-circle"
+            aria-hidden="true"
+          ></div>
+
+
+          <!-- card top -->
+
+          <div class="card-top">
+
+            <div class="card-logo">
+              WindsorKnot
+            </div>
+
+            <div class="card-pass">
+              KNOT PASS
+            </div>
+
+
+            <div class="card-ornament">
+
+              <div
+                class="card-ornament-line"
+              ></div>
+
+              <div
+                class="card-ornament-diamond"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+          <!-- member -->
+
+          <div class="identity">
+
+            <div class="member-label">
+              MEMBER
+            </div>
+
+
+            <div class="member-name">
+              ${name}
+            </div>
+
+
+            <div class="organization">
+              ${organization}
+            </div>
+
+          </div>
+
+
+          <!-- divider -->
+
+          <div class="divider"></div>
+
+
+          <!-- member data -->
+
+          <div class="card-grid">
+
+
+            <div class="data-block">
+
+              <div class="data-label">
+                MEMBER No.
+              </div>
+
+              <div class="data-value">
+                ${memberNo}
+              </div>
+
+            </div>
+
+
+            <div class="data-block">
+
+              <div class="data-label">
+                MEMBER SINCE
+              </div>
+
+              <div class="data-value">
+                ${joinMonth}
+              </div>
+
+            </div>
+
+
+            <div
+              class="
+                data-block
+                visits-block
+              "
+            >
+
+              <div class="data-label">
+                TOTAL VISITS
+              </div>
+
+              <div class="visits">
+                ${formattedVisits}
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- card footer -->
+
+          <div class="card-footer">
+
+            <div class="card-footer-text">
+              KNOT PASS MEMBER
+            </div>
+
+            <div
+              class="card-footer-mark"
+              aria-hidden="true"
+            ></div>
+
+          </div>
+
+
         </div>
 
-      </div>
+
+        <div class="venue-line">
+          BAR ・ RESTAURANT ・ PARTY
+        </div>
 
 
-      <div class="notice">
-        この画面は会員本人のみご利用いただけます。
-      </div>
+        <div class="notice">
+          この画面は会員本人のみご利用いただけます。
+        </div>
 
-    `;
+
+      </section>
+
+  `;
 
 }
 
+
+
+/* =========================================================
+   LOADING
+========================================================= */
 
 /**
  * Loading
@@ -788,24 +1893,43 @@ function showLoading(message) {
 
         <div class="loading">
 
-          <div class="spinner"></div>
+
+          <div class="loading-mark">
+
+            <div class="spinner"></div>
+
+            <div
+              class="loading-mark-center"
+            ></div>
+
+          </div>
+
 
           <div class="loading-title">
             ${escapeHtml(message)}
           </div>
 
+
           <div class="loading-text">
+            LINEアカウントと会員情報を確認しています。
+            <br>
             しばらくお待ちください。
           </div>
+
 
         </div>
 
       </div>
 
-    `;
+  `;
 
 }
 
+
+
+/* =========================================================
+   FORM ERROR
+========================================================= */
 
 /**
  * フォームエラー
@@ -818,19 +1942,28 @@ function showFormError(message) {
         'formError'
       );
 
+
   if (!box) {
+
     return;
+
   }
 
 
   box.textContent =
     message;
 
+
   box.style.display =
     'block';
 
 }
 
+
+
+/* =========================================================
+   FATAL ERROR
+========================================================= */
 
 /**
  * 致命的エラー
@@ -841,15 +1974,32 @@ function showFatalError(message) {
     .getElementById('app')
     .innerHTML = `
 
+
       <div class="panel">
 
+
+        <div class="fatal-icon">
+          !
+        </div>
+
+
+        <div class="eyebrow">
+          CONNECTION ERROR
+        </div>
+
+
         <h2 class="auth-title">
-          KNOT PASSを表示できません
+          KNOT PASS
         </h2>
 
+
         <p class="auth-description">
-          接続中にエラーが発生しました。
+          会員情報を表示できませんでした。
+          <br>
+          通信環境をご確認のうえ、
+          もう一度お試しください。
         </p>
+
 
         <div
           class="error"
@@ -858,12 +2008,23 @@ function showFatalError(message) {
           ${escapeHtml(message)}
         </div>
 
+
       </div>
 
-    `;
+
+      <div class="venue-line">
+        WINDSOR KNOT
+      </div>
+
+  `;
 
 }
 
+
+
+/* =========================================================
+   JOIN MONTH FORMAT
+========================================================= */
 
 /**
  * 入会月表示
@@ -871,13 +2032,22 @@ function showFatalError(message) {
 function formatJoinMonth(value) {
 
   if (!value) {
+
     return '-';
+
   }
 
 
   const text =
     String(value).trim();
 
+
+  /*
+    例:
+    2026年9月
+    ↓
+    2026.09
+  */
 
   const match =
     text.match(
@@ -890,8 +2060,12 @@ function formatJoinMonth(value) {
     return (
       match[1] +
       '.' +
-      String(match[2])
-        .padStart(2, '0')
+      String(
+        match[2]
+      ).padStart(
+        2,
+        '0'
+      )
     );
 
   }
@@ -902,19 +2076,46 @@ function formatJoinMonth(value) {
 }
 
 
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
 /**
- * HTMLエスケープ
+ * XSS対策
  */
 function escapeHtml(value) {
 
   return String(
-    value == null ? '' : value
+    value == null
+      ? ''
+      : value
   )
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+
+    .replace(
+      /</g,
+      '&lt;'
+    )
+
+    .replace(
+      />/g,
+      '&gt;'
+    )
+
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+
+    .replace(
+      /'/g,
+      '&#039;'
+    );
 
 }
 
