@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -8,50 +10,55 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
-  <meta name="theme-color" content="#111a2d">
+  <meta
+    name="theme-color"
+    content="#111a2d"
+  >
 
-  <title>WindsorKnot | KNOT PASS</title>
+  <title>
+    WindsorKnot | KNOT PASS
+  </title>
 
-  <!-- LIFF SDK -->
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <!-- LINE LIFF SDK -->
+  <script
+    src="https://static.line-scdn.net/liff/edge/2/sdk.js"
+  ></script>
 
-  <!--
-    WindsorKnot KNOT PASS
-    ------------------------------------
-    LIFF / GAS の通信ロジックは既存仕様を維持。
-    UIのみ WindsorKnot ブランドに合わせて再設計。
-  -->
 
   <style>
 
-    /* =========================================================
-       01. DESIGN TOKENS
-    ========================================================= */
+    /* =====================================================
+       DESIGN TOKENS
+    ===================================================== */
 
     :root {
-      --navy: #111a2d;
-      --navy-deep: #0b1220;
-      --navy-soft: #172238;
 
-      --gold: #c6a15b;
-      --gold-light: #ddc58f;
-      --gold-dark: #8f713b;
+      --navy:
+        #111a2d;
 
-      --ivory: #f4f0e7;
-      --ivory-soft: #ebe5d8;
+      --navy-deep:
+        #0b1220;
 
-      --white: #ffffff;
-      --black: #111111;
+      --navy-soft:
+        #172238;
 
-      --muted: rgba(244, 240, 231, 0.56);
-      --line: rgba(198, 161, 91, 0.28);
+      --gold:
+        #c6a15b;
+
+      --gold-light:
+        #ddc58f;
+
+      --ivory:
+        #f4f0e7;
+
+      --danger:
+        #e0aaa0;
 
       --serif:
         "Times New Roman",
         "Yu Mincho",
         "YuMincho",
         "Hiragino Mincho ProN",
-        "Hiragino Mincho Pro",
         serif;
 
       --sans:
@@ -62,36 +69,58 @@
         "Yu Gothic",
         Arial,
         sans-serif;
+
     }
 
 
-    /* =========================================================
-       02. RESET
-    ========================================================= */
+    /* =====================================================
+       RESET
+    ===================================================== */
 
     * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+
+      box-sizing:
+        border-box;
+
+      -webkit-tap-highlight-color:
+        transparent;
+
     }
+
 
     html {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      background: var(--navy);
-    }
 
-    body {
       margin: 0;
-      min-height: 100vh;
-      min-height: 100dvh;
+
+      padding: 0;
+
+      min-height:
+        100%;
 
       background:
+        var(--navy);
+
+    }
+
+
+    body {
+
+      margin: 0;
+
+      min-height:
+        100vh;
+
+      min-height:
+        100dvh;
+
+      background:
+
         radial-gradient(
           circle at 50% -10%,
-          rgba(198, 161, 91, 0.09),
+          rgba(198,161,91,.09),
           transparent 34%
         ),
+
         linear-gradient(
           180deg,
           #141e33 0%,
@@ -99,281 +128,467 @@
           #0c1424 100%
         );
 
-      color: var(--ivory);
-      font-family: var(--sans);
+      color:
+        var(--ivory);
 
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      font-family:
+        var(--sans);
+
+      -webkit-font-smoothing:
+        antialiased;
+
     }
+
 
     button,
     input {
-      font-family: inherit;
+
+      font-family:
+        inherit;
+
     }
 
-
-    /* =========================================================
-       03. BACKGROUND DECORATION
-    ========================================================= */
 
     body::before {
+
       content: "";
-      position: fixed;
+
+      position:
+        fixed;
+
       z-index: 0;
 
-      width: 460px;
-      height: 460px;
+      width:
+        460px;
 
-      top: -270px;
-      right: -270px;
+      height:
+        460px;
 
-      border: 1px solid rgba(198, 161, 91, 0.10);
-      border-radius: 50%;
+      top:
+        -270px;
 
-      pointer-events: none;
+      right:
+        -270px;
+
+      border:
+        1px solid
+        rgba(198,161,91,.10);
+
+      border-radius:
+        50%;
+
+      pointer-events:
+        none;
+
     }
+
 
     body::after {
+
       content: "";
-      position: fixed;
+
+      position:
+        fixed;
+
       z-index: 0;
 
-      width: 330px;
-      height: 330px;
+      width:
+        330px;
 
-      bottom: -230px;
-      left: -220px;
+      height:
+        330px;
 
-      border: 1px solid rgba(198, 161, 91, 0.07);
-      border-radius: 50%;
+      bottom:
+        -230px;
 
-      pointer-events: none;
+      left:
+        -220px;
+
+      border:
+        1px solid
+        rgba(198,161,91,.07);
+
+      border-radius:
+        50%;
+
+      pointer-events:
+        none;
+
     }
 
 
-    /* =========================================================
-       04. PAGE
-    ========================================================= */
+    /* =====================================================
+       PAGE
+    ===================================================== */
 
     .page {
-      position: relative;
+
+      position:
+        relative;
+
       z-index: 1;
 
-      width: 100%;
-      min-height: 100vh;
-      min-height: 100dvh;
+      width:
+        100%;
+
+      min-height:
+        100vh;
+
+      min-height:
+        100dvh;
+
     }
+
 
     .container {
-      width: 100%;
-      max-width: 480px;
 
-      margin: 0 auto;
+      width:
+        100%;
+
+      max-width:
+        480px;
+
+      margin:
+        0 auto;
 
       padding:
-        calc(26px + env(safe-area-inset-top))
+
+        calc(
+          26px +
+          env(safe-area-inset-top)
+        )
+
         20px
-        calc(55px + env(safe-area-inset-bottom));
+
+        calc(
+          55px +
+          env(safe-area-inset-bottom)
+        );
+
     }
 
 
-    /* =========================================================
-       05. BRAND HEADER
-    ========================================================= */
+    /* =====================================================
+       HEADER
+    ===================================================== */
 
     .brand {
-      text-align: center;
 
-      padding-top: 15px;
-      margin-bottom: 30px;
+      text-align:
+        center;
+
+      padding-top:
+        15px;
+
+      margin-bottom:
+        30px;
+
     }
+
 
     .brand-logo {
-      color: var(--ivory);
 
-      font-family: var(--serif);
-      font-size: clamp(38px, 10vw, 49px);
+      color:
+        var(--ivory);
 
-      font-weight: 400;
-      font-style: italic;
+      font-family:
+        var(--serif);
 
-      letter-spacing: -2.5px;
-      line-height: 1;
+      font-size:
+        clamp(
+          38px,
+          10vw,
+          49px
+        );
 
-      text-shadow:
-        0 0 30px rgba(198, 161, 91, 0.07);
+      font-weight:
+        400;
+
+      font-style:
+        italic;
+
+      letter-spacing:
+        -2.5px;
+
+      line-height:
+        1;
+
     }
+
 
     .brand-sub {
-      margin-top: 13px;
 
-      color: var(--gold-light);
+      margin-top:
+        13px;
 
-      font-family: var(--serif);
-      font-size: 10px;
+      color:
+        var(--gold-light);
 
-      letter-spacing: 5px;
+      font-family:
+        var(--serif);
 
-      opacity: 0.88;
+      font-size:
+        10px;
+
+      letter-spacing:
+        5px;
+
+      opacity:
+        .88;
+
     }
+
 
     .brand-line {
-      display: flex;
-      align-items: center;
-      justify-content: center;
 
-      width: 180px;
+      display:
+        flex;
 
-      margin: 21px auto 0;
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        180px;
+
+      margin:
+        21px auto 0;
+
     }
+
 
     .brand-line::before,
     .brand-line::after {
+
       content: "";
 
-      display: block;
-      flex: 1;
+      display:
+        block;
 
-      height: 1px;
+      flex:
+        1;
+
+      height:
+        1px;
+
+    }
+
+
+    .brand-line::before {
 
       background:
         linear-gradient(
           90deg,
           transparent,
-          rgba(198, 161, 91, 0.72)
+          rgba(198,161,91,.72)
         );
+
     }
 
+
     .brand-line::after {
+
       background:
         linear-gradient(
           90deg,
-          rgba(198, 161, 91, 0.72),
+          rgba(198,161,91,.72),
           transparent
         );
+
     }
+
 
     .brand-diamond {
-      width: 5px;
-      height: 5px;
 
-      margin: 0 11px;
+      width:
+        5px;
 
-      border: 1px solid var(--gold);
-      transform: rotate(45deg);
-    }
+      height:
+        5px;
 
-
-    /* =========================================================
-       06. COMMON PANEL
-    ========================================================= */
-
-    .panel {
-      position: relative;
-
-      overflow: hidden;
-
-      border: 1px solid rgba(198, 161, 91, 0.22);
-      border-radius: 4px;
-
-      padding: 34px 27px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(23, 34, 56, 0.96),
-          rgba(10, 18, 32, 0.98)
-        );
-
-      box-shadow:
-        0 28px 65px rgba(0, 0, 0, 0.24);
-    }
-
-    .panel::before {
-      content: "";
-
-      position: absolute;
-
-      width: 150px;
-      height: 150px;
-
-      top: -100px;
-      right: -100px;
-
-      border: 1px solid rgba(198, 161, 91, 0.14);
-      border-radius: 50%;
-    }
-
-    .eyebrow {
-      color: var(--gold);
-
-      font-family: var(--serif);
-      font-size: 10px;
-
-      letter-spacing: 3.5px;
-
-      text-transform: uppercase;
-    }
-
-
-    /* =========================================================
-       07. LOADING
-    ========================================================= */
-
-    .loading {
-      padding: 32px 5px 27px;
-      text-align: center;
-    }
-
-    .loading-mark {
-      position: relative;
-
-      width: 54px;
-      height: 54px;
-
-      margin: 0 auto 30px;
-    }
-
-    .loading-mark::before {
-      content: "";
-
-      position: absolute;
-      inset: 0;
-
-      border: 1px solid rgba(198, 161, 91, 0.18);
-      border-radius: 50%;
-    }
-
-    .spinner {
-      position: absolute;
-
-      top: 6px;
-      left: 6px;
-
-      width: 42px;
-      height: 42px;
+      margin:
+        0 11px;
 
       border:
         1px solid
-        rgba(198, 161, 91, 0.15);
+        var(--gold);
+
+      transform:
+        rotate(45deg);
+
+    }
+
+
+    /* =====================================================
+       PANEL
+    ===================================================== */
+
+    .panel {
+
+      position:
+        relative;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        rgba(198,161,91,.22);
+
+      border-radius:
+        4px;
+
+      padding:
+        34px 27px;
+
+      background:
+
+        linear-gradient(
+          145deg,
+          rgba(23,34,56,.96),
+          rgba(10,18,32,.98)
+        );
+
+      box-shadow:
+
+        0 28px 65px
+        rgba(0,0,0,.24);
+
+    }
+
+
+    .eyebrow {
+
+      color:
+        var(--gold);
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        10px;
+
+      letter-spacing:
+        3.5px;
+
+    }
+
+
+    /* =====================================================
+       LOADING
+    ===================================================== */
+
+    .loading {
+
+      padding:
+        32px 5px 27px;
+
+      text-align:
+        center;
+
+    }
+
+
+    .loading-mark {
+
+      position:
+        relative;
+
+      width:
+        54px;
+
+      height:
+        54px;
+
+      margin:
+        0 auto 30px;
+
+    }
+
+
+    .loading-mark::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      inset:
+        0;
+
+      border:
+        1px solid
+        rgba(198,161,91,.18);
+
+      border-radius:
+        50%;
+
+    }
+
+
+    .spinner {
+
+      position:
+        absolute;
+
+      top:
+        6px;
+
+      left:
+        6px;
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      border:
+        1px solid
+        rgba(198,161,91,.15);
 
       border-top-color:
         var(--gold);
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       animation:
         spin 1.2s linear infinite;
+
     }
 
-    .loading-mark-center {
-      position: absolute;
 
-      top: 50%;
-      left: 50%;
+    @keyframes spin {
 
-      width: 5px;
-      height: 5px;
+      to {
+
+        transform:
+          rotate(360deg);
+
+      }
+
+    }
+
+
+    .loading-center {
+
+      position:
+        absolute;
+
+      top:
+        50%;
+
+      left:
+        50%;
+
+      width:
+        5px;
+
+      height:
+        5px;
 
       margin:
         -2.5px 0 0 -2.5px;
@@ -383,141 +598,188 @@
 
       transform:
         rotate(45deg);
+
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
 
     .loading-title {
-      margin-bottom: 12px;
 
-      color: var(--ivory);
+      margin-bottom:
+        12px;
 
-      font-family: var(--serif);
-      font-size: 19px;
+      font-family:
+        var(--serif);
 
-      font-weight: 400;
+      font-size:
+        19px;
 
-      letter-spacing: 1px;
+      letter-spacing:
+        1px;
+
     }
+
 
     .loading-text {
+
       color:
-        rgba(244, 240, 231, 0.48);
+        rgba(244,240,231,.48);
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      line-height: 1.9;
+      line-height:
+        1.9;
+
     }
 
 
-    /* =========================================================
-       08. LINK / AUTH FORM
-    ========================================================= */
+    /* =====================================================
+       FORM
+    ===================================================== */
 
     .auth-head {
-      margin-bottom: 31px;
+
+      margin-bottom:
+        31px;
+
     }
 
+
     .auth-title {
+
       margin:
         8px 0 10px;
 
-      color: var(--ivory);
+      font-family:
+        var(--serif);
 
-      font-family: var(--serif);
-      font-size: 27px;
+      font-size:
+        27px;
 
-      font-weight: 400;
+      font-weight:
+        400;
 
-      letter-spacing: 1px;
+      letter-spacing:
+        1px;
+
     }
+
 
     .auth-description {
-      margin: 0;
+
+      margin:
+        0;
 
       color:
-        rgba(244, 240, 231, 0.52);
+        rgba(244,240,231,.52);
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      line-height: 1.9;
+      line-height:
+        1.9;
+
     }
+
 
     .field {
-      margin-bottom: 22px;
+
+      margin-bottom:
+        22px;
+
     }
+
 
     .label {
-      display: block;
 
-      margin-bottom: 9px;
+      display:
+        block;
+
+      margin-bottom:
+        9px;
 
       color:
-        rgba(221, 197, 143, 0.82);
+        rgba(221,197,143,.82);
 
-      font-size: 9px;
+      font-size:
+        9px;
 
-      font-weight: 500;
+      letter-spacing:
+        2.4px;
 
-      letter-spacing: 2.4px;
     }
 
+
     input {
-      width: 100%;
-      height: 55px;
+
+      width:
+        100%;
+
+      height:
+        55px;
 
       border:
         1px solid
-        rgba(198, 161, 91, 0.25);
+        rgba(198,161,91,.25);
 
-      border-radius: 2px;
+      border-radius:
+        2px;
 
-      padding: 0 16px;
+      padding:
+        0 16px;
 
       background:
-        rgba(255, 255, 255, 0.035);
+        rgba(255,255,255,.035);
 
-      color: var(--ivory);
+      color:
+        var(--ivory);
 
-      font-size: 16px;
+      font-size:
+        16px;
 
-      outline: none;
+      outline:
+        none;
 
-      transition:
-        border-color 0.2s,
-        background 0.2s;
     }
+
 
     input::placeholder {
+
       color:
-        rgba(244, 240, 231, 0.24);
+        rgba(244,240,231,.24);
+
     }
+
 
     input:focus {
-      border-color:
-        rgba(198, 161, 91, 0.78);
 
-      background:
-        rgba(255, 255, 255, 0.055);
+      border-color:
+        rgba(198,161,91,.78);
+
     }
 
-    button {
-      position: relative;
 
-      width: 100%;
-      height: 57px;
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
 
-      margin-top: 8px;
+    .primary-button {
+
+      width:
+        100%;
+
+      min-height:
+        57px;
 
       border:
         1px solid
         var(--gold);
 
-      border-radius: 2px;
+      border-radius:
+        2px;
+
+      padding:
+        12px 15px;
 
       background:
         var(--gold);
@@ -528,97 +790,156 @@
       font-family:
         var(--serif);
 
-      font-size: 13px;
+      font-size:
+        13px;
 
-      font-weight: 600;
+      font-weight:
+        600;
 
-      letter-spacing: 2.5px;
+      letter-spacing:
+        2px;
 
-      cursor: pointer;
+      cursor:
+        pointer;
 
-      transition:
-        opacity 0.2s,
-        transform 0.15s;
     }
 
-    button:active {
-      transform:
-        scale(0.99);
+
+    .primary-button:disabled {
+
+      opacity:
+        .45;
+
+      cursor:
+        default;
+
     }
 
-    button:disabled {
-      opacity: 0.48;
+
+    .secondary-button {
+
+      width:
+        100%;
+
+      min-height:
+        55px;
+
+      border:
+        1px solid
+        rgba(198,161,91,.38);
+
+      border-radius:
+        2px;
+
+      padding:
+        12px;
+
+      background:
+        transparent;
+
+      color:
+        var(--gold-light);
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        12px;
+
+      letter-spacing:
+        2px;
+
+      cursor:
+        pointer;
+
     }
+
 
     .error {
-      display: none;
 
-      margin-top: 20px;
+      display:
+        none;
 
-      padding: 15px 16px;
+      margin-top:
+        20px;
+
+      padding:
+        15px 16px;
 
       border:
         1px solid
-        rgba(193, 112, 91, 0.32);
-
-      border-radius: 2px;
+        rgba(193,112,91,.32);
 
       background:
-        rgba(121, 47, 35, 0.13);
+        rgba(121,47,35,.13);
 
-      color: #e0aaa0;
+      color:
+        var(--danger);
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      line-height: 1.8;
+      line-height:
+        1.8;
+
     }
 
 
-    /* =========================================================
-       09. MEMBER CARD WRAPPER
-    ========================================================= */
-
-    .member-section {
-      width: 100%;
-    }
+    /* =====================================================
+       MEMBER CARD
+    ===================================================== */
 
     .member-intro {
-      margin-bottom: 16px;
 
-      text-align: center;
+      margin-bottom:
+        16px;
+
+      text-align:
+        center;
+
     }
+
 
     .member-intro-label {
+
       color:
-        rgba(221, 197, 143, 0.65);
+        rgba(221,197,143,.65);
 
-      font-size: 8px;
+      font-size:
+        8px;
 
-      letter-spacing: 4px;
+      letter-spacing:
+        4px;
+
     }
 
 
-    /* =========================================================
-       10. MEMBER CARD
-    ========================================================= */
-
     .card {
-      position: relative;
 
-      overflow: hidden;
+      position:
+        relative;
 
-      width: 100%;
-      min-height: 570px;
+      overflow:
+        hidden;
+
+      width:
+        100%;
+
+      min-height:
+        570px;
 
       border:
         1px solid
-        rgba(198, 161, 91, 0.52);
+        rgba(198,161,91,.52);
 
-      border-radius: 5px;
+      border-radius:
+        5px;
 
-      padding: 32px 28px 30px;
+      padding:
+        32px 28px 30px;
 
       background:
+
         linear-gradient(
           145deg,
           #162138 0%,
@@ -626,408 +947,727 @@
           #0b1322 100%
         );
 
-      color:
-        var(--ivory);
-
       box-shadow:
+
         0 35px 75px
-        rgba(0, 0, 0, 0.30);
+        rgba(0,0,0,.30);
+
     }
 
-
-    /* subtle inner border */
 
     .card::before {
+
       content: "";
 
-      position: absolute;
+      position:
+        absolute;
 
-      inset: 7px;
+      inset:
+        7px;
 
       border:
         1px solid
-        rgba(198, 161, 91, 0.11);
+        rgba(198,161,91,.11);
 
-      border-radius: 2px;
+      pointer-events:
+        none;
 
-      pointer-events: none;
     }
 
-
-    /* giant decorative K */
 
     .card-monogram {
-      position: absolute;
 
-      z-index: 0;
+      position:
+        absolute;
 
-      right: -20px;
-      bottom: -45px;
+      right:
+        -20px;
 
-      color:
-        rgba(198, 161, 91, 0.035);
-
-      font-family:
-        var(--serif);
-
-      font-size: 280px;
-      font-style: italic;
-
-      line-height: 1;
-
-      pointer-events: none;
-      user-select: none;
-    }
-
-
-    /* corner circle */
-
-    .card-circle {
-      position: absolute;
-
-      z-index: 0;
-
-      width: 290px;
-      height: 290px;
-
-      right: -195px;
-      bottom: -120px;
-
-      border:
-        1px solid
-        rgba(198, 161, 91, 0.16);
-
-      border-radius: 50%;
-    }
-
-
-    /* =========================================================
-       11. CARD TOP
-    ========================================================= */
-
-    .card-top {
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-logo {
-      color:
-        var(--ivory);
-
-      font-family:
-        var(--serif);
-
-      font-size: 28px;
-
-      font-style: italic;
-
-      letter-spacing: -1.5px;
-    }
-
-    .card-pass {
-      margin-top: 8px;
+      bottom:
+        -45px;
 
       color:
-        var(--gold-light);
-
-      font-size: 8px;
-
-      letter-spacing: 4px;
-    }
-
-    .card-ornament {
-      display: flex;
-      align-items: center;
-
-      width: 100%;
-
-      margin-top: 23px;
-    }
-
-    .card-ornament-line {
-      flex: 1;
-
-      height: 1px;
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(198, 161, 91, 0.48),
-          rgba(198, 161, 91, 0.06)
-        );
-    }
-
-    .card-ornament-diamond {
-      width: 5px;
-      height: 5px;
-
-      margin-left: 8px;
-
-      border:
-        1px solid
-        rgba(198, 161, 91, 0.72);
-
-      transform:
-        rotate(45deg);
-    }
-
-
-    /* =========================================================
-       12. MEMBER IDENTITY
-    ========================================================= */
-
-    .identity {
-      position: relative;
-      z-index: 2;
-
-      margin-top: 70px;
-    }
-
-    .member-label {
-      color:
-        rgba(221, 197, 143, 0.57);
-
-      font-size: 8px;
-
-      letter-spacing: 4px;
-    }
-
-    .member-name {
-      margin-top: 10px;
-
-      color:
-        var(--ivory);
+        rgba(198,161,91,.035);
 
       font-family:
         var(--serif);
 
       font-size:
-        clamp(27px, 8vw, 34px);
+        280px;
 
-      font-weight: 400;
+      font-style:
+        italic;
 
-      letter-spacing: 2px;
+      line-height:
+        1;
 
-      line-height: 1.35;
+      user-select:
+        none;
+
     }
 
-    .organization {
-      min-height: 42px;
 
-      margin-top: 13px;
+    .card-circle {
+
+      position:
+        absolute;
+
+      width:
+        290px;
+
+      height:
+        290px;
+
+      right:
+        -195px;
+
+      bottom:
+        -120px;
+
+      border:
+        1px solid
+        rgba(198,161,91,.16);
+
+      border-radius:
+        50%;
+
+    }
+
+
+    .card-top,
+    .identity,
+    .card-grid,
+    .card-footer {
+
+      position:
+        relative;
+
+      z-index:
+        2;
+
+    }
+
+
+    .card-logo {
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        28px;
+
+      font-style:
+        italic;
+
+      letter-spacing:
+        -1.5px;
+
+    }
+
+
+    .card-pass {
+
+      margin-top:
+        8px;
 
       color:
-        rgba(244, 240, 231, 0.55);
+        var(--gold-light);
 
-      font-size: 11px;
+      font-size:
+        8px;
 
-      line-height: 1.75;
+      letter-spacing:
+        4px;
 
-      letter-spacing: 0.3px;
     }
 
 
-    /* =========================================================
-       13. DIVIDER
-    ========================================================= */
+    .card-ornament {
 
-    .divider {
-      position: relative;
-      z-index: 2;
+      display:
+        flex;
 
-      height: 1px;
+      align-items:
+        center;
 
-      margin: 33px 0 27px;
+      margin-top:
+        23px;
+
+    }
+
+
+    .card-ornament-line {
+
+      flex:
+        1;
+
+      height:
+        1px;
 
       background:
+
         linear-gradient(
           90deg,
-          rgba(198, 161, 91, 0.50),
-          rgba(198, 161, 91, 0.08)
+          rgba(198,161,91,.48),
+          rgba(198,161,91,.06)
         );
+
     }
 
 
-    /* =========================================================
-       14. MEMBER DATA
-    ========================================================= */
+    .card-ornament-diamond {
+
+      width:
+        5px;
+
+      height:
+        5px;
+
+      margin-left:
+        8px;
+
+      border:
+        1px solid
+        rgba(198,161,91,.72);
+
+      transform:
+        rotate(45deg);
+
+    }
+
+
+    .identity {
+
+      margin-top:
+        70px;
+
+    }
+
+
+    .member-label {
+
+      color:
+        rgba(221,197,143,.57);
+
+      font-size:
+        8px;
+
+      letter-spacing:
+        4px;
+
+    }
+
+
+    .member-name {
+
+      margin-top:
+        10px;
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        clamp(
+          27px,
+          8vw,
+          34px
+        );
+
+      letter-spacing:
+        2px;
+
+      line-height:
+        1.35;
+
+    }
+
+
+    .organization {
+
+      min-height:
+        42px;
+
+      margin-top:
+        13px;
+
+      color:
+        rgba(244,240,231,.55);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.75;
+
+    }
+
+
+    .divider {
+
+      position:
+        relative;
+
+      z-index:
+        2;
+
+      height:
+        1px;
+
+      margin:
+        33px 0 27px;
+
+      background:
+
+        linear-gradient(
+          90deg,
+          rgba(198,161,91,.50),
+          rgba(198,161,91,.08)
+        );
+
+    }
+
 
     .card-grid {
-      position: relative;
-      z-index: 2;
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
         1fr 1fr;
 
       gap:
         28px 18px;
+
     }
 
-    .data-block {
-      min-width: 0;
-    }
 
     .data-label {
-      margin-bottom: 9px;
+
+      margin-bottom:
+        9px;
 
       color:
-        rgba(221, 197, 143, 0.48);
+        rgba(221,197,143,.48);
 
-      font-size: 7.5px;
+      font-size:
+        7.5px;
 
-      letter-spacing: 2.5px;
+      letter-spacing:
+        2.5px;
+
     }
+
 
     .data-value {
-      color:
-        var(--ivory);
 
       font-family:
         var(--serif);
 
-      font-size: 18px;
+      font-size:
+        18px;
 
-      letter-spacing: 1px;
+      letter-spacing:
+        1px;
+
     }
+
 
     .visits-block {
-      grid-column: 1 / -1;
 
-      margin-top: 1px;
+      grid-column:
+        1 / -1;
+
     }
 
+
     .visits {
-      color:
-        var(--ivory);
 
       font-family:
         var(--serif);
 
-      font-size: 48px;
+      font-size:
+        48px;
 
-      font-weight: 400;
+      line-height:
+        1;
 
-      line-height: 1;
+      letter-spacing:
+        2px;
 
-      letter-spacing: 2px;
     }
 
-
-    /* =========================================================
-       15. CARD FOOTER
-    ========================================================= */
 
     .card-footer {
-      position: absolute;
 
-      z-index: 2;
+      position:
+        absolute;
 
-      left: 28px;
-      right: 28px;
-      bottom: 27px;
+      left:
+        28px;
 
-      display: flex;
+      right:
+        28px;
 
-      align-items: center;
-      justify-content: space-between;
+      bottom:
+        27px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
     }
+
 
     .card-footer-text {
+
       color:
-        rgba(221, 197, 143, 0.40);
+        rgba(221,197,143,.40);
 
-      font-size: 7px;
+      font-size:
+        7px;
 
-      letter-spacing: 3px;
+      letter-spacing:
+        3px;
+
     }
+
 
     .card-footer-mark {
-      width: 18px;
-      height: 18px;
+
+      width:
+        18px;
+
+      height:
+        18px;
 
       border:
         1px solid
-        rgba(198, 161, 91, 0.35);
+        rgba(198,161,91,.35);
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
     }
 
+
     .card-footer-mark::after {
+
       content: "";
 
-      width: 4px;
-      height: 4px;
+      width:
+        4px;
+
+      height:
+        4px;
 
       border:
         1px solid
-        rgba(198, 161, 91, 0.7);
+        rgba(198,161,91,.7);
 
       transform:
         rotate(45deg);
+
     }
 
 
-    /* =========================================================
-       16. BELOW CARD
-    ========================================================= */
+    /* =====================================================
+       MEMBER MENU
+    ===================================================== */
 
-    .venue-line {
-      margin-top: 25px;
+    .member-menu-area {
 
-      text-align: center;
+      margin-top:
+        31px;
+
+      padding:
+        27px 23px;
+
+      border:
+        1px solid
+        rgba(198,161,91,.20);
+
+      background:
+        rgba(255,255,255,.025);
+
+      text-align:
+        center;
+
+    }
+
+
+    .menu-eyebrow {
 
       color:
-        rgba(221, 197, 143, 0.55);
+        var(--gold);
+
+      font-size:
+        8px;
+
+      letter-spacing:
+        3.5px;
+
+    }
+
+
+    .menu-title {
+
+      margin-top:
+        10px;
 
       font-family:
         var(--serif);
 
-      font-size: 9px;
+      font-size:
+        21px;
 
-      letter-spacing: 5px;
+      letter-spacing:
+        1px;
+
     }
 
-    .notice {
-      margin-top: 16px;
 
-      text-align: center;
+    .menu-description {
+
+      margin:
+        12px 0 21px;
 
       color:
-        rgba(244, 240, 231, 0.32);
+        rgba(244,240,231,.48);
 
-      font-size: 9px;
+      font-size:
+        10px;
 
-      line-height: 1.8;
+      line-height:
+        1.9;
 
-      letter-spacing: 0.5px;
     }
 
 
-    /* =========================================================
-       17. FATAL ERROR
-    ========================================================= */
+    /* =====================================================
+       MODAL
+    ===================================================== */
 
-    .fatal-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .modal-overlay {
 
-      width: 46px;
-      height: 46px;
+      display:
+        none;
 
-      margin-bottom: 25px;
+      position:
+        fixed;
+
+      z-index:
+        9999;
+
+      inset:
+        0;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      padding:
+        24px;
+
+      background:
+        rgba(5,10,18,.82);
+
+      backdrop-filter:
+        blur(7px);
+
+    }
+
+
+    .modal-overlay.open {
+
+      display:
+        flex;
+
+    }
+
+
+    .modal {
+
+      width:
+        100%;
+
+      max-width:
+        410px;
+
+      padding:
+        33px 26px;
 
       border:
         1px solid
-        rgba(198, 161, 91, 0.45);
+        rgba(198,161,91,.40);
 
-      border-radius: 50%;
+      background:
+
+        linear-gradient(
+          145deg,
+          #172238,
+          #0c1424
+        );
+
+      box-shadow:
+
+        0 35px 90px
+        rgba(0,0,0,.45);
+
+    }
+
+
+    .modal-title {
+
+      margin-top:
+        9px;
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        23px;
+
+      line-height:
+        1.5;
+
+    }
+
+
+    .modal-text {
+
+      margin:
+        15px 0 25px;
+
+      color:
+        rgba(244,240,231,.52);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+    .modal-member {
+
+      margin-bottom:
+        24px;
+
+      padding:
+        16px;
+
+      border-top:
+        1px solid
+        rgba(198,161,91,.20);
+
+      border-bottom:
+        1px solid
+        rgba(198,161,91,.20);
+
+    }
+
+
+    .modal-member-name {
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        18px;
+
+    }
+
+
+    .modal-member-no {
+
+      margin-top:
+        6px;
+
+      color:
+        rgba(221,197,143,.55);
+
+      font-size:
+        9px;
+
+      letter-spacing:
+        2px;
+
+    }
+
+
+    .modal-buttons {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        10px;
+
+    }
+
+
+    /* =====================================================
+       SUCCESS
+    ===================================================== */
+
+    .success-panel {
+
+      text-align:
+        center;
+
+      padding:
+        42px 27px;
+
+    }
+
+
+    .success-mark {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        64px;
+
+      height:
+        64px;
+
+      margin:
+        0 auto 28px;
+
+      border:
+        1px solid
+        var(--gold);
+
+      border-radius:
+        50%;
 
       color:
         var(--gold);
@@ -1035,113 +1675,346 @@
       font-family:
         var(--serif);
 
-      font-size: 20px;
+      font-size:
+        25px;
+
     }
 
 
-    /* =========================================================
-       18. SMALL DEVICES
-    ========================================================= */
+    .success-title {
 
-    @media (max-width: 370px) {
+      font-family:
+        var(--serif);
+
+      font-size:
+        25px;
+
+      letter-spacing:
+        1px;
+
+    }
+
+
+    .success-date {
+
+      margin-top:
+        14px;
+
+      color:
+        var(--gold-light);
+
+      font-size:
+        11px;
+
+      letter-spacing:
+        2px;
+
+    }
+
+
+    .success-text {
+
+      margin-top:
+        20px;
+
+      color:
+        rgba(244,240,231,.48);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+    /* =====================================================
+       FOOTER TEXT
+    ===================================================== */
+
+    .venue-line {
+
+      margin-top:
+        25px;
+
+      text-align:
+        center;
+
+      color:
+        rgba(221,197,143,.55);
+
+      font-family:
+        var(--serif);
+
+      font-size:
+        9px;
+
+      letter-spacing:
+        5px;
+
+    }
+
+
+    .notice {
+
+      margin-top:
+        16px;
+
+      text-align:
+        center;
+
+      color:
+        rgba(244,240,231,.32);
+
+      font-size:
+        9px;
+
+      line-height:
+        1.8;
+
+    }
+
+
+    @media (
+      max-width: 370px
+    ) {
 
       .container {
-        padding-left: 15px;
-        padding-right: 15px;
+
+        padding-left:
+          15px;
+
+        padding-right:
+          15px;
+
       }
+
 
       .card {
-        min-height: 540px;
 
-        padding-left: 23px;
-        padding-right: 23px;
+        min-height:
+          540px;
+
+        padding-left:
+          23px;
+
+        padding-right:
+          23px;
+
       }
+
 
       .identity {
-        margin-top: 60px;
+
+        margin-top:
+          60px;
+
       }
+
 
       .member-name {
-        font-size: 26px;
-      }
 
-      .card-footer {
-        left: 23px;
-        right: 23px;
+        font-size:
+          26px;
+
       }
 
     }
 
   </style>
+
 </head>
 
 
 <body>
 
+
 <div class="page">
+
 
   <div class="container">
 
 
-    <!-- =======================================================
-         BRAND HEADER
-    ======================================================== -->
+    <!-- HEADER -->
 
     <header class="brand">
 
+
       <div class="brand-logo">
+
         WindsorKnot
+
       </div>
 
+
       <div class="brand-sub">
+
         KNOT PASS
+
       </div>
+
 
       <div class="brand-line">
 
-        <div class="brand-diamond"></div>
+        <div
+          class="brand-diamond"
+        ></div>
 
       </div>
+
 
     </header>
 
 
-    <!-- =======================================================
-         APPLICATION
-    ======================================================== -->
+    <!-- APPLICATION -->
 
     <main id="app">
 
+
       <div class="panel">
+
 
         <div class="loading">
 
+
           <div class="loading-mark">
 
-            <div class="spinner"></div>
+            <div
+              class="spinner"
+            ></div>
 
             <div
-              class="loading-mark-center"
+              class="loading-center"
             ></div>
 
           </div>
 
+
           <div class="loading-title">
+
             Membership Verification
+
           </div>
 
+
           <div class="loading-text">
-            LINEアカウントと会員情報を確認しています。
+
+            LINEアカウントと
+            会員情報を確認しています。
+
           </div>
+
 
         </div>
 
+
       </div>
+
 
     </main>
 
 
   </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     CONFIRM MODAL
+===================================================== -->
+
+<div
+  id="confirmModal"
+  class="modal-overlay"
+>
+
+
+  <div class="modal">
+
+
+    <div class="eyebrow">
+
+      MEMBER MENU
+
+    </div>
+
+
+    <div class="modal-title">
+
+      会員メニューを
+      <br>
+      利用しますか？
+
+    </div>
+
+
+    <div class="modal-text">
+
+      「利用する」を押すと、
+      本日の会員メニュー利用として
+      記録されます。
+
+    </div>
+
+
+    <div class="modal-member">
+
+
+      <div
+        id="modalMemberName"
+        class="modal-member-name"
+      ></div>
+
+
+      <div
+        id="modalMemberNo"
+        class="modal-member-no"
+      ></div>
+
+
+    </div>
+
+
+    <div class="modal-buttons">
+
+
+      <button
+        type="button"
+        class="secondary-button"
+        onclick="closeUseConfirm()"
+      >
+
+        キャンセル
+
+      </button>
+
+
+      <button
+        id="confirmUseButton"
+        type="button"
+        class="primary-button"
+        onclick="registerMenuUse()"
+      >
+
+        利用する
+
+      </button>
+
+
+    </div>
+
+
+    <div
+      id="useError"
+      class="error"
+    ></div>
+
+
+  </div>
+
 
 </div>
 
@@ -1149,33 +2022,51 @@
 
 <script>
 
-/* =========================================================
+
+/* =====================================================
    CONFIG
-========================================================= */
+===================================================== */
 
 
-/*
-  発行済みLIFF ID
-*/
+/**
+ * LIFF ID
+ */
 const LIFF_ID =
   '2011750249-fEwnWrPD';
 
 
-/*
-  現在利用しているGAS Web App
-  ※既存のURLをそのまま維持
-*/
+/**
+ * GAS Web App URL
+ *
+ * 現在利用しているURLを維持
+ */
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzxcn3Esc_HHA_N13EDRoSeX4ItMobH6eaQ_874g1AV_I0CU6LUaczHbnP_6mDzf6mNCw/exec';
 
 
-let currentLineUserId = '';
+
+/* =====================================================
+   STATE
+===================================================== */
+
+
+let currentLineUserId =
+  '';
+
+
+let currentMember =
+  null;
+
+
+let isRegistering =
+  false;
 
 
 
-/* =========================================================
+/* =====================================================
    INITIALIZE
-========================================================= */
+===================================================== */
+
 
 window.addEventListener(
   'load',
@@ -1185,30 +2076,40 @@ window.addEventListener(
 
 async function initialize() {
 
+
   try {
 
-    /*
-      LIFF初期化
-    */
+
+    /**
+     * LIFF初期化
+     */
     await liff.init({
-      liffId: LIFF_ID
+
+      liffId:
+        LIFF_ID
+
     });
 
 
-    /*
-      未ログインの場合はLINEログイン
-    */
-    if (!liff.isLoggedIn()) {
+    /**
+     * LINEログイン
+     */
+    if (
+      !liff.isLoggedIn()
+    ) {
+
 
       liff.login();
 
+
       return;
+
     }
 
 
-    /*
-      LINEプロフィール取得
-    */
+    /**
+     * LINEプロフィール取得
+     */
     const profile =
       await liff.getProfile();
 
@@ -1217,7 +2118,10 @@ async function initialize() {
       profile.userId;
 
 
-    if (!currentLineUserId) {
+    if (
+      !currentLineUserId
+    ) {
+
 
       throw new Error(
         'LINE User IDを取得できませんでした。'
@@ -1226,18 +2130,20 @@ async function initialize() {
     }
 
 
-    /*
-      会員検索
-    */
+    /**
+     * 会員検索
+     */
     await checkMember();
 
 
   } catch (error) {
 
+
     console.error(
-      'LIFF INITIALIZE ERROR',
+      'INITIALIZE ERROR',
       error
     );
+
 
     showFatalError(
       error.message ||
@@ -1250,17 +2156,16 @@ async function initialize() {
 
 
 
-/* =========================================================
+/* =====================================================
    MEMBER SEARCH
-========================================================= */
+===================================================== */
 
-/**
- * LINE User IDで
- * 既存会員連携を検索
- */
+
 async function checkMember() {
 
+
   try {
+
 
     showLoading(
       'Membership Verification'
@@ -1268,19 +2173,32 @@ async function checkMember() {
 
 
     const url =
+
       API_URL +
+
       '?action=getMember' +
+
       '&lineUserId=' +
+
       encodeURIComponent(
         currentLineUserId
       );
 
 
     const response =
-      await fetch(url);
+      await fetch(
+        url,
+        {
+          cache:
+            'no-store'
+        }
+      );
 
 
-    if (!response.ok) {
+    if (
+      !response.ok
+    ) {
+
 
       throw new Error(
         '会員情報の取得に失敗しました。'
@@ -1293,9 +2211,9 @@ async function checkMember() {
       await response.json();
 
 
-    /*
-      既にLINE連携済み
-    */
+    /**
+     * 会員発見
+     */
     if (
       data.success &&
       (
@@ -1307,44 +2225,62 @@ async function checkMember() {
       )
     ) {
 
+
+      currentMember =
+        data.member;
+
+
       showMemberCard(
         data.member
       );
 
+
       return;
+
     }
 
 
-    /*
-      会員だがLINE未連携
-    */
+    /**
+     * LINE未連携
+     */
     if (
       data.status ===
       'MEMBER_NOT_LINKED'
     ) {
 
+
       showLinkForm();
 
+
       return;
+
     }
 
 
     throw new Error(
+
       data.message ||
+
       '会員情報を確認できませんでした。'
+
     );
 
 
   } catch (error) {
+
 
     console.error(
       'MEMBER SEARCH ERROR',
       error
     );
 
+
     showFatalError(
+
       error.message ||
+
       String(error)
+
     );
 
   }
@@ -1353,50 +2289,69 @@ async function checkMember() {
 
 
 
-/* =========================================================
-   FIRST LINK FORM
-========================================================= */
+/* =====================================================
+   LINK FORM
+===================================================== */
 
-/**
- * 初回連携フォーム
- */
+
 function showLinkForm() {
 
+
   document
-    .getElementById('app')
+    .getElementById(
+      'app'
+    )
     .innerHTML = `
+
 
       <div class="panel">
 
 
         <div class="auth-head">
 
+
           <div class="eyebrow">
+
             MEMBER AUTHENTICATION
+
           </div>
 
+
           <h2 class="auth-title">
+
             KNOT PASS
+
           </h2>
 
+
           <p class="auth-description">
-            初回のみ会員情報の確認が必要です。
+
+            初回のみ会員情報の
+            確認が必要です。
+
             <br>
-            ご登録済みの会員番号と電話番号を
-            入力してください。
+
+            ご登録済みの会員番号と
+            電話番号を入力してください。
+
           </p>
+
 
         </div>
 
 
         <div class="field">
 
+
           <label
             class="label"
             for="memberNo"
           >
+
             MEMBER No.
+
           </label>
+
 
           <input
             id="memberNo"
@@ -1406,17 +2361,22 @@ function showLinkForm() {
             placeholder="会員番号"
           >
 
+
         </div>
 
 
         <div class="field">
 
+
           <label
             class="label"
             for="phone"
           >
+
             PHONE NUMBER
+
           </label>
+
 
           <input
             id="phone"
@@ -1426,15 +2386,19 @@ function showLinkForm() {
             placeholder="08012345678"
           >
 
+
         </div>
 
 
         <button
           id="linkButton"
           type="button"
+          class="primary-button"
           onclick="linkMember()"
         >
+
           VIEW KNOT PASS
+
         </button>
 
 
@@ -1448,12 +2412,18 @@ function showLinkForm() {
 
 
       <div class="venue-line">
+
         BAR ・ RESTAURANT ・ PARTY
+
       </div>
 
 
       <div class="notice">
-        入力情報は会員本人確認のためにのみ使用します。
+
+        入力情報は
+        会員本人確認のためにのみ
+        使用します。
+
       </div>
 
   `;
@@ -1462,30 +2432,36 @@ function showLinkForm() {
 
 
 
-/* =========================================================
+/* =====================================================
    LINK MEMBER
-========================================================= */
+===================================================== */
 
-/**
- * 初回LINE連携
- */
+
 async function linkMember() {
 
+
   const memberNo =
+
     document
-      .getElementById('memberNo')
+      .getElementById(
+        'memberNo'
+      )
       .value
       .trim();
 
 
   const phone =
+
     document
-      .getElementById('phone')
+      .getElementById(
+        'phone'
+      )
       .value
       .trim();
 
 
   const button =
+
     document
       .getElementById(
         'linkButton'
@@ -1493,6 +2469,7 @@ async function linkMember() {
 
 
   const errorBox =
+
     document
       .getElementById(
         'formError'
@@ -1503,27 +2480,33 @@ async function linkMember() {
     'none';
 
 
-  /*
-    validation
-  */
+  if (
+    !memberNo
+  ) {
 
-  if (!memberNo) {
 
     showFormError(
       '会員番号を入力してください。'
     );
 
+
     return;
+
   }
 
 
-  if (!phone) {
+  if (
+    !phone
+  ) {
+
 
     showFormError(
       '電話番号を入力してください。'
     );
 
+
     return;
+
   }
 
 
@@ -1537,9 +2520,13 @@ async function linkMember() {
 
   try {
 
+
     const response =
+
       await fetch(
+
         API_URL,
+
         {
 
           method:
@@ -1553,6 +2540,7 @@ async function linkMember() {
           },
 
           body:
+
             JSON.stringify({
 
               action:
@@ -1570,6 +2558,7 @@ async function linkMember() {
             })
 
         }
+
       );
 
 
@@ -1577,9 +2566,6 @@ async function linkMember() {
       await response.json();
 
 
-    /*
-      LINE連携成功
-    */
     if (
       data.success &&
       (
@@ -1591,27 +2577,35 @@ async function linkMember() {
       )
     ) {
 
+
+      currentMember =
+        data.member;
+
+
       showMemberCard(
         data.member
       );
 
+
       return;
+
     }
 
 
-    /*
-      認証失敗
-    */
     showFormError(
+
       data.message ||
+
       '会員情報を確認できませんでした。'
+
     );
 
 
   } catch (error) {
 
+
     console.error(
-      'LINK MEMBER ERROR',
+      'LINK ERROR',
       error
     );
 
@@ -1623,14 +2617,19 @@ async function linkMember() {
 
   } finally {
 
+
     const currentButton =
+
       document
         .getElementById(
           'linkButton'
         );
 
 
-    if (currentButton) {
+    if (
+      currentButton
+    ) {
+
 
       currentButton.disabled =
         false;
@@ -1647,49 +2646,65 @@ async function linkMember() {
 
 
 
-/* =========================================================
+/* =====================================================
    MEMBER CARD
-========================================================= */
+===================================================== */
 
-/**
- * 会員証表示
- */
-function showMemberCard(member) {
+
+function showMemberCard(
+  member
+) {
+
+
+  currentMember =
+    member;
 
 
   const memberNo =
+
     escapeHtml(
-      member.memberNo || ''
+      member.memberNo ||
+      ''
     );
 
 
   const name =
+
     escapeHtml(
-      member.name || ''
+      member.name ||
+      ''
     );
 
 
   const organization =
+
     escapeHtml(
-      member.organization || ''
+      member.organization ||
+      ''
     );
 
 
   const joinMonth =
+
     escapeHtml(
+
       formatJoinMonth(
         member.joinMonth
       )
+
     );
 
 
   const visits =
+
     Number(
-      member.visits || 0
+      member.visits ||
+      0
     );
 
 
   const formattedVisits =
+
     String(
       visits
     ).padStart(
@@ -1699,18 +2714,24 @@ function showMemberCard(member) {
 
 
   document
-    .getElementById('app')
+    .getElementById(
+      'app'
+    )
     .innerHTML = `
 
 
-      <section class="member-section">
+      <section>
 
 
         <div class="member-intro">
 
+
           <div class="member-intro-label">
+
             MEMBERSHIP
+
           </div>
+
 
         </div>
 
@@ -1718,14 +2739,15 @@ function showMemberCard(member) {
         <div class="card">
 
 
-          <!-- decorative elements -->
-
           <div
             class="card-monogram"
             aria-hidden="true"
           >
+
             K
+
           </div>
+
 
           <div
             class="card-circle"
@@ -1733,138 +2755,218 @@ function showMemberCard(member) {
           ></div>
 
 
-          <!-- card top -->
-
           <div class="card-top">
 
+
             <div class="card-logo">
+
               WindsorKnot
+
             </div>
 
+
             <div class="card-pass">
+
               KNOT PASS
+
             </div>
 
 
             <div class="card-ornament">
 
+
               <div
                 class="card-ornament-line"
               ></div>
+
 
               <div
                 class="card-ornament-diamond"
               ></div>
 
+
             </div>
+
 
           </div>
 
 
-          <!-- member -->
-
           <div class="identity">
 
+
             <div class="member-label">
+
               MEMBER
+
             </div>
 
 
             <div class="member-name">
+
               ${name}
+
             </div>
 
 
             <div class="organization">
+
               ${organization}
+
             </div>
+
 
           </div>
 
-
-          <!-- divider -->
 
           <div class="divider"></div>
 
 
-          <!-- member data -->
-
           <div class="card-grid">
 
 
-            <div class="data-block">
+            <div>
+
 
               <div class="data-label">
+
                 MEMBER No.
+
               </div>
 
+
               <div class="data-value">
+
                 ${memberNo}
+
               </div>
+
 
             </div>
 
 
-            <div class="data-block">
+            <div>
+
 
               <div class="data-label">
+
                 MEMBER SINCE
+
               </div>
+
 
               <div class="data-value">
+
                 ${joinMonth}
+
               </div>
+
 
             </div>
 
 
-            <div
-              class="
-                data-block
-                visits-block
-              "
-            >
+            <div class="visits-block">
+
 
               <div class="data-label">
+
                 TOTAL VISITS
+
               </div>
+
 
               <div class="visits">
+
                 ${formattedVisits}
+
               </div>
+
 
             </div>
 
 
           </div>
 
-
-          <!-- card footer -->
 
           <div class="card-footer">
 
+
             <div class="card-footer-text">
+
               KNOT PASS MEMBER
+
             </div>
+
 
             <div
               class="card-footer-mark"
-              aria-hidden="true"
             ></div>
 
+
           </div>
+
+
+        </div>
+
+
+
+        <!-- =========================================
+             MEMBER MENU BUTTON
+        ========================================== -->
+
+
+        <div class="member-menu-area">
+
+
+          <div class="menu-eyebrow">
+
+            MEMBER BENEFIT
+
+          </div>
+
+
+          <div class="menu-title">
+
+            会員メニュー
+
+          </div>
+
+
+          <div class="menu-description">
+
+            会員メニューをご利用の際に
+            <br>
+            スタッフの案内に従って
+            ボタンを押してください。
+
+          </div>
+
+
+          <button
+            type="button"
+            class="primary-button"
+            onclick="openUseConfirm()"
+          >
+
+            会員メニューを利用する
+
+          </button>
 
 
         </div>
 
 
         <div class="venue-line">
+
           BAR ・ RESTAURANT ・ PARTY
+
         </div>
 
 
         <div class="notice">
-          この画面は会員本人のみご利用いただけます。
+
+          この画面は
+          会員本人のみご利用いただけます。
+
         </div>
 
 
@@ -1876,48 +2978,422 @@ function showMemberCard(member) {
 
 
 
-/* =========================================================
-   LOADING
-========================================================= */
+/* =====================================================
+   OPEN CONFIRM
+===================================================== */
 
-/**
- * Loading
- */
-function showLoading(message) {
+
+function openUseConfirm() {
+
+
+  if (
+    !currentMember
+  ) {
+
+
+    return;
+
+  }
+
 
   document
-    .getElementById('app')
+    .getElementById(
+      'modalMemberName'
+    )
+    .textContent =
+
+      currentMember.name ||
+      '';
+
+
+  document
+    .getElementById(
+      'modalMemberNo'
+    )
+    .textContent =
+
+      'MEMBER No. ' +
+
+      (
+        currentMember.memberNo ||
+        ''
+      );
+
+
+  const errorBox =
+
+    document
+      .getElementById(
+        'useError'
+      );
+
+
+  errorBox.style.display =
+    'none';
+
+
+  document
+    .getElementById(
+      'confirmModal'
+    )
+    .classList
+    .add(
+      'open'
+    );
+
+}
+
+
+
+/* =====================================================
+   CLOSE CONFIRM
+===================================================== */
+
+
+function closeUseConfirm() {
+
+
+  if (
+    isRegistering
+  ) {
+
+
+    return;
+
+  }
+
+
+  document
+    .getElementById(
+      'confirmModal'
+    )
+    .classList
+    .remove(
+      'open'
+    );
+
+}
+
+
+
+/* =====================================================
+   REGISTER MENU USE
+===================================================== */
+
+
+async function registerMenuUse() {
+
+
+  /**
+   * 二重タップ防止
+   */
+  if (
+    isRegistering
+  ) {
+
+
+    return;
+
+  }
+
+
+  isRegistering =
+    true;
+
+
+  const button =
+
+    document
+      .getElementById(
+        'confirmUseButton'
+      );
+
+
+  const errorBox =
+
+    document
+      .getElementById(
+        'useError'
+      );
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    '登録中...';
+
+
+  errorBox.style.display =
+    'none';
+
+
+  try {
+
+
+    /**
+     * GASへ送信
+     *
+     * 会員No.や氏名は送らず、
+     * LINE User IDだけを送信。
+     *
+     * GAS側で本人を再照合する。
+     */
+    const response =
+
+      await fetch(
+
+        API_URL,
+
+        {
+
+          method:
+            'POST',
+
+          headers: {
+
+            'Content-Type':
+              'text/plain;charset=utf-8'
+
+          },
+
+          body:
+
+            JSON.stringify({
+
+              action:
+                'useMemberMenu',
+
+              lineUserId:
+                currentLineUserId
+
+            })
+
+        }
+
+      );
+
+
+    if (
+      !response.ok
+    ) {
+
+
+      throw new Error(
+        '利用登録に失敗しました。'
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !data.success ||
+      data.status !==
+        'MENU_USE_REGISTERED'
+    ) {
+
+
+      throw new Error(
+
+        data.message ||
+
+        '利用登録に失敗しました。'
+
+      );
+
+    }
+
+
+    /**
+     * 最新会員情報
+     */
+    if (
+      data.member
+    ) {
+
+
+      currentMember =
+        data.member;
+
+    }
+
+
+    /**
+     * モーダルを閉じる
+     */
+    document
+      .getElementById(
+        'confirmModal'
+      )
+      .classList
+      .remove(
+        'open'
+      );
+
+
+    /**
+     * 完了画面
+     */
+    showUseSuccess(
+      data.member
+    );
+
+
+  } catch (error) {
+
+
+    console.error(
+      'MENU USE ERROR',
+      error
+    );
+
+
+    errorBox.textContent =
+
+      error.message ||
+
+      '通信エラーが発生しました。';
+
+
+    errorBox.style.display =
+      'block';
+
+
+    isRegistering =
+      false;
+
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      '利用する';
+
+  }
+
+}
+
+
+
+/* =====================================================
+   SUCCESS SCREEN
+===================================================== */
+
+
+function showUseSuccess(
+  member
+) {
+
+
+  const today =
+    formatToday();
+
+
+  const memberNo =
+
+    member &&
+    member.memberNo
+
+      ? escapeHtml(
+          member.memberNo
+        )
+
+      : '';
+
+
+  document
+    .getElementById(
+      'app'
+    )
     .innerHTML = `
 
-      <div class="panel">
 
-        <div class="loading">
-
-
-          <div class="loading-mark">
-
-            <div class="spinner"></div>
-
-            <div
-              class="loading-mark-center"
-            ></div>
-
-          </div>
+      <div
+        class="
+          panel
+          success-panel
+        "
+      >
 
 
-          <div class="loading-title">
-            ${escapeHtml(message)}
-          </div>
+        <div class="success-mark">
+
+          ✓
+
+        </div>
 
 
-          <div class="loading-text">
-            LINEアカウントと会員情報を確認しています。
-            <br>
-            しばらくお待ちください。
-          </div>
+        <div class="eyebrow">
+
+          MEMBER MENU
+
+        </div>
+
+
+        <div class="success-title">
+
+          利用を記録しました
+
+        </div>
+
+
+        <div class="success-date">
+
+          ${today}
+
+          <br>
+
+          MEMBER No.
+          ${memberNo}
+
+        </div>
+
+
+        <div class="success-text">
+
+          会員メニューの利用登録が
+          完了しました。
+
+          <br>
+
+          ご利用ありがとうございます。
+
+        </div>
+
+
+        <div
+          style="
+            margin-top:30px;
+          "
+        >
+
+
+          <button
+            type="button"
+            class="secondary-button"
+            onclick="reloadMemberCard()"
+          >
+
+            会員証に戻る
+
+          </button>
 
 
         </div>
+
+
+      </div>
+
+
+      <div class="venue-line">
+
+        WINDSOR KNOT
 
       </div>
 
@@ -1927,23 +3403,125 @@ function showLoading(message) {
 
 
 
-/* =========================================================
-   FORM ERROR
-========================================================= */
+/* =====================================================
+   RELOAD MEMBER CARD
+===================================================== */
 
-/**
- * フォームエラー
- */
-function showFormError(message) {
+
+async function reloadMemberCard() {
+
+
+  /**
+   * 状態を解除
+   */
+  isRegistering =
+    false;
+
+
+  /**
+   * GASから最新情報を再取得
+   *
+   * 会員名簿H列が
+   * 精算管理台帳をCOUNTしている場合、
+   * TOTAL VISITSもここで更新される。
+   */
+  await checkMember();
+
+}
+
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+
+function showLoading(
+  message
+) {
+
+
+  document
+    .getElementById(
+      'app'
+    )
+    .innerHTML = `
+
+
+      <div class="panel">
+
+
+        <div class="loading">
+
+
+          <div class="loading-mark">
+
+
+            <div
+              class="spinner"
+            ></div>
+
+
+            <div
+              class="loading-center"
+            ></div>
+
+
+          </div>
+
+
+          <div class="loading-title">
+
+            ${escapeHtml(message)}
+
+          </div>
+
+
+          <div class="loading-text">
+
+            LINEアカウントと
+            会員情報を確認しています。
+
+            <br>
+
+            しばらくお待ちください。
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+  `;
+
+}
+
+
+
+/* =====================================================
+   FORM ERROR
+===================================================== */
+
+
+function showFormError(
+  message
+) {
+
 
   const box =
+
     document
       .getElementById(
         'formError'
       );
 
 
-  if (!box) {
+  if (
+    !box
+  ) {
+
 
     return;
 
@@ -1961,51 +3539,61 @@ function showFormError(message) {
 
 
 
-/* =========================================================
+/* =====================================================
    FATAL ERROR
-========================================================= */
+===================================================== */
 
-/**
- * 致命的エラー
- */
-function showFatalError(message) {
+
+function showFatalError(
+  message
+) {
+
 
   document
-    .getElementById('app')
+    .getElementById(
+      'app'
+    )
     .innerHTML = `
 
 
       <div class="panel">
 
 
-        <div class="fatal-icon">
-          !
-        </div>
-
-
         <div class="eyebrow">
+
           CONNECTION ERROR
+
         </div>
 
 
         <h2 class="auth-title">
+
           KNOT PASS
+
         </h2>
 
 
         <p class="auth-description">
+
           会員情報を表示できませんでした。
+
           <br>
+
           通信環境をご確認のうえ、
           もう一度お試しください。
+
         </p>
 
 
         <div
           class="error"
-          style="display:block;"
+          style="
+            display:block;
+          "
         >
+
           ${escapeHtml(message)}
+
         </div>
 
 
@@ -2013,7 +3601,9 @@ function showFatalError(message) {
 
 
       <div class="venue-line">
+
         WINDSOR KNOT
+
       </div>
 
   `;
@@ -2022,16 +3612,67 @@ function showFatalError(message) {
 
 
 
-/* =========================================================
-   JOIN MONTH FORMAT
-========================================================= */
+/* =====================================================
+   DATE
+===================================================== */
 
-/**
- * 入会月表示
- */
-function formatJoinMonth(value) {
 
-  if (!value) {
+function formatToday() {
+
+
+  const date =
+    new Date();
+
+
+  const year =
+    date.getFullYear();
+
+
+  const month =
+    String(
+      date.getMonth() +
+      1
+    ).padStart(
+      2,
+      '0'
+    );
+
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      '0'
+    );
+
+
+  return (
+    year +
+    '.' +
+    month +
+    '.' +
+    day
+  );
+
+}
+
+
+
+/* =====================================================
+   JOIN MONTH
+===================================================== */
+
+
+function formatJoinMonth(
+  value
+) {
+
+
+  if (
+    !value
+  ) {
+
 
     return '-';
 
@@ -2039,33 +3680,74 @@ function formatJoinMonth(value) {
 
 
   const text =
-    String(value).trim();
+    String(
+      value
+    ).trim();
 
 
-  /*
-    例:
-    2026年9月
-    ↓
-    2026.09
-  */
+  /**
+   * 2026年9月
+   * →
+   * 2026.09
+   */
+  const japaneseMatch =
 
-  const match =
     text.match(
       /(\d{4})年\s*(\d{1,2})月/
     );
 
 
-  if (match) {
+  if (
+    japaneseMatch
+  ) {
+
 
     return (
-      match[1] +
+
+      japaneseMatch[1] +
+
       '.' +
+
       String(
-        match[2]
+        japaneseMatch[2]
       ).padStart(
         2,
         '0'
       )
+
+    );
+
+  }
+
+
+  /**
+   * ISO形式
+   */
+  const isoMatch =
+
+    text.match(
+      /^(\d{4})-(\d{1,2})/
+    );
+
+
+  if (
+    isoMatch
+  ) {
+
+
+    return (
+
+      isoMatch[1] +
+
+      '.' +
+
+      String(
+        isoMatch[2]
+      ).padStart(
+        2,
+        '0'
+      )
+
     );
 
   }
@@ -2077,49 +3759,57 @@ function formatJoinMonth(value) {
 
 
 
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-/**
- * XSS対策
- */
-function escapeHtml(value) {
+
+function escapeHtml(
+  value
+) {
+
 
   return String(
+
     value == null
+
       ? ''
+
       : value
+
   )
 
-    .replace(
-      /&/g,
-      '&amp;'
-    )
+  .replace(
+    /&/g,
+    '&amp;'
+  )
 
-    .replace(
-      /</g,
-      '&lt;'
-    )
+  .replace(
+    /</g,
+    '&lt;'
+  )
 
-    .replace(
-      />/g,
-      '&gt;'
-    )
+  .replace(
+    />/g,
+    '&gt;'
+  )
 
-    .replace(
-      /"/g,
-      '&quot;'
-    )
+  .replace(
+    /"/g,
+    '&quot;'
+  )
 
-    .replace(
-      /'/g,
-      '&#039;'
-    );
+  .replace(
+    /'/g,
+    '&#039;'
+  );
 
 }
 
+
 </script>
 
+
 </body>
+
 </html>
